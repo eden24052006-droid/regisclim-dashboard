@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader } from "@/components/site-layout";
+import { Aurora, PointerSpotlight } from "@/components/motion";
 
 function NotFoundComponent() {
   return (
@@ -122,7 +123,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background">
+      <div className="relative min-h-screen">
+        <Aurora />
+        <PointerSpotlight />
         <SiteHeader />
         <main>
           <Outlet />

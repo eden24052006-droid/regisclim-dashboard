@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AirVent, ArrowRight, Droplets, HousePlug, Scale, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactBand, PageHero } from "@/components/site-layout";
+import { Reveal } from "@/components/motion";
+import { cn } from "@/lib/utils";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 
 export const Route = createFileRoute("/installation-de-climatisation-a-nimes")({
@@ -50,13 +53,108 @@ const equipment = [
   },
 ];
 
+const TAB_DURATION = 6000;
+
+function EquipmentTabs() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const timer = window.setTimeout(
+      () => setActive((i) => (i + 1) % equipment.length),
+      TAB_DURATION,
+    );
+    return () => window.clearTimeout(timer);
+  }, [active, paused]);
+
+  return (
+    <div
+      className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div role="tablist" aria-label="Équipements" className="grid gap-2">
+        {equipment.map(({ icon: Icon, title }, i) => (
+          <button
+            key={title}
+            role="tab"
+            type="button"
+            id={`tab-${i}`}
+            aria-selected={active === i}
+            aria-controls={`panel-${i}`}
+            onClick={() => setActive(i)}
+            className={cn(
+              "group relative flex items-center gap-4 overflow-hidden rounded-2xl border px-5 py-4 text-left transition-all duration-500",
+              active === i
+                ? "border-white/15 bg-white/[0.07]"
+                : "border-transparent hover:bg-white/[0.03]",
+            )}
+          >
+            <span
+              className={cn(
+                "grid size-11 shrink-0 place-items-center rounded-xl transition-all duration-500",
+                active === i ? "bg-gradient-warm text-white" : "bg-white/5 text-muted-foreground",
+              )}
+            >
+              <Icon className="size-5" />
+            </span>
+            <span
+              className={cn(
+                "font-display text-lg font-semibold transition-colors",
+                active === i ? "text-foreground" : "text-muted-foreground",
+              )}
+            >
+              {title}
+            </span>
+            {active === i && (
+              <span
+                key={`${active}-${paused}`}
+                className="bg-gradient-cool absolute inset-x-0 bottom-0 h-0.5 origin-left"
+                style={{
+                  animation: paused ? "none" : `fill-bar ${TAB_DURATION}ms linear forwards`,
+                  transform: paused ? "scaleX(1)" : undefined,
+                }}
+              />
+            )}
+          </button>
+        ))}
+      </div>
+      <div className="glow-border spotlight relative grid overflow-hidden rounded-[2rem] bg-white/[0.03] [grid-template-areas:'stack']">
+        {equipment.map(({ icon: Icon, title, text }, i) => (
+          <article
+            key={title}
+            id={`panel-${i}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${i}`}
+            aria-hidden={active !== i}
+            className={cn(
+              "relative flex flex-col justify-between p-8 transition-all duration-700 [grid-area:stack] sm:p-12",
+              active === i
+                ? "translate-y-0 opacity-100"
+                : "pointer-events-none translate-y-6 opacity-0",
+            )}
+          >
+            <Icon className="absolute -right-6 -bottom-6 size-56 text-primary/10" />
+            <span className="font-display text-7xl font-bold text-white/10">0{i + 1}</span>
+            <div className="relative mt-10">
+              <h2 className="font-display text-3xl font-bold sm:text-4xl">{title}</h2>
+              <p className="mt-5 max-w-lg text-lg leading-8 text-muted-foreground">{text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function InstallationPage() {
   return (
     <>
       <PageHero
-        variant="split"
         image={technicianImage}
         imageAlt="Installation professionnelle d’une climatisation"
+        icon={<AirVent className="size-9" />}
         eyebrow="Étude & pose"
         title="Installation de climatisation à Nîmes"
       >
@@ -64,10 +162,10 @@ function InstallationPage() {
         Nîmes et ses environs.
       </PageHero>
       <section className="content-shell">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
-          <div className="prose-copy">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+          <Reveal className="prose-copy">
             <p className="eyebrow text-primary">Réglementation</p>
-            <h2 className="mt-3! text-4xl!">Une solution adaptée à chaque lieu</h2>
+            <h2 className="mt-3! text-4xl! sm:text-5xl!">Une solution adaptée à chaque lieu</h2>
             <p className="mt-6! text-lg">
               L’installation d’une climatisation exige un spécialiste qualifié. À la maison, au
               bureau ou dans un magasin, l’objectif est d’apporter confort et bien-être en
@@ -78,53 +176,43 @@ function InstallationPage() {
               la solution la plus adaptée. Il reste votre interlocuteur unique pour simplifier tous
               les échanges.
             </p>
-          </div>
-          <aside className="self-start bg-secondary p-8 text-secondary-foreground sm:p-10">
-            <ShieldCheck className="size-10 text-accent" />
-            <p className="mt-6 font-display text-xl leading-9 font-semibold">
-              Le Code de l’environnement prévoit que seul un professionnel habilité peut mettre une
-              climatisation en service.
-            </p>
-          </aside>
-        </div>
-      </section>
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          {equipment.map(({ icon: Icon, title, text }, i) => (
-            <article
-              key={title}
-              className="group grid gap-4 border-b border-border py-10 transition-colors sm:grid-cols-[6rem_1fr] lg:grid-cols-[8rem_1fr_1.3fr] lg:items-center lg:gap-10"
-            >
-              <span className="font-display text-6xl font-bold text-border transition-colors group-hover:text-primary">
-                0{i + 1}
-              </span>
-              <h2 className="flex items-center gap-3 font-display text-2xl font-bold">
-                <Icon className="size-6 shrink-0 text-accent" />
-                {title}
-              </h2>
-              <p className="leading-7 text-muted-foreground sm:col-start-2 lg:col-start-3">
-                {text}
+          </Reveal>
+          <Reveal delay={200}>
+            <aside className="relative rotate-[-2deg] rounded-[1.75rem] border border-accent/30 bg-accent/10 p-8 transition-transform duration-500 hover:rotate-0 sm:p-10">
+              <ShieldCheck className="size-10 text-accent" />
+              <p className="mt-6 font-display text-xl leading-9 font-semibold">
+                Le Code de l’environnement prévoit que seul un professionnel habilité peut mettre
+                une climatisation en service.
               </p>
-            </article>
-          ))}
+            </aside>
+          </Reveal>
         </div>
       </section>
-      <section className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 py-16 sm:px-8 md:flex-row md:items-center">
-        <div>
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">
-            C’est un de vos futurs projets ?
-          </h2>
-          <p className="mt-3 max-w-2xl text-muted-foreground">
-            Découvrez les aides disponibles pour concrétiser votre installation.
-          </p>
-        </div>
-        <Button asChild size="hero" className="shrink-0">
-          <Link to="/aides-et-subventions">
-            Je découvre mes aides <ArrowRight />
-          </Link>
-        </Button>
+      <section className="mx-auto max-w-7xl px-5 sm:px-8">
+        <Reveal>
+          <EquipmentTabs />
+        </Reveal>
       </section>
-      <ContactBand variant="dark" />
+      <section className="mx-auto max-w-7xl px-5 pt-20 sm:px-8">
+        <Reveal>
+          <div className="glass flex flex-col items-start justify-between gap-6 rounded-full px-8 py-6 max-md:rounded-[2rem] md:flex-row md:items-center">
+            <div>
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">
+                C’est un de vos futurs projets ?
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                Découvrez les aides disponibles pour concrétiser votre installation.
+              </p>
+            </div>
+            <Button asChild size="hero" className="btn-shine shrink-0">
+              <Link to="/aides-et-subventions">
+                Je découvre mes aides <ArrowRight />
+              </Link>
+            </Button>
+          </div>
+        </Reveal>
+      </section>
+      <ContactBand />
     </>
   );
 }

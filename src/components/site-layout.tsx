@@ -3,6 +3,7 @@ import { Clock3, Facebook, Flame, MapPin, Phone, Snowflake } from "lucide-react"
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Reveal, SplitWords } from "@/components/motion";
 
 const navItems = [
   { to: "/" as const, label: "Accueil" },
@@ -57,7 +58,7 @@ export function SiteHeader() {
       <div aria-hidden style={{ height: headerHeight }} />
       <header className="fixed inset-x-0 top-0 z-50 max-h-screen overflow-y-auto">
         <div ref={barsRef}>
-          <div className="bg-secondary text-secondary-foreground">
+          <div className="border-b border-white/5 bg-secondary/80 text-secondary-foreground backdrop-blur-xl">
             <div className="mx-auto flex min-h-9 max-w-7xl items-center justify-between gap-4 px-5 text-xs font-semibold sm:px-8">
               <span className="hidden items-center gap-2 text-secondary-muted sm:flex">
                 <Clock3 className="size-3.5 text-accent" /> Lun–Ven · 8h–17h
@@ -79,20 +80,20 @@ export function SiteHeader() {
               className={cn(
                 "mx-auto max-w-7xl rounded-2xl border backdrop-blur-xl transition-all duration-300",
                 scrolled
-                  ? "border-border/80 bg-background/95 shadow-[var(--shadow-soft)]"
-                  : "border-transparent bg-background/80",
+                  ? "border-white/10 bg-background/75 shadow-[var(--shadow-lift)]"
+                  : "border-white/5 bg-background/40",
               )}
             >
               <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-5">
                 <Brand />
                 <NavLinks className="hidden lg:flex" />
-                <Button asChild variant="warm" className="shrink-0">
+                <Button asChild variant="warm" className="btn-shine shrink-0">
                   <a href="tel:0767875716" aria-label="Appeler Régis au 07 67 87 57 16">
                     <Phone /> <span className="hidden sm:inline">Appeler Régis</span>
                   </a>
                 </Button>
               </div>
-              <div className="border-t border-border/60 px-2 py-1.5 lg:hidden">
+              <div className="border-t border-white/10 px-2 py-1.5 lg:hidden">
                 <NavLinks className="flex rounded-none border-0 bg-transparent px-1 [mask-image:linear-gradient(to_right,transparent,black_12px,black_calc(100%-28px),transparent)]" />
               </div>
             </div>
@@ -121,7 +122,7 @@ function NavLinks({ className }: { className?: string }) {
     <nav
       ref={navRef}
       className={cn(
-        "relative items-center gap-1 overflow-x-auto rounded-full border border-border/70 bg-muted/60 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        "relative items-center gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/5 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
       aria-label="Navigation principale"
@@ -132,7 +133,7 @@ function NavLinks({ className }: { className?: string }) {
           to={item.to}
           activeOptions={{ exact: item.to === "/" }}
           className="shrink-0 rounded-full px-3 py-2 text-[13px] font-semibold sm:px-4 sm:text-sm whitespace-nowrap text-muted-foreground transition-all hover:text-foreground"
-          activeProps={{ className: "bg-background text-primary! shadow-sm" }}
+          activeProps={{ className: "bg-white/10 text-foreground! shadow-sm" }}
         >
           {item.label}
         </Link>
@@ -143,9 +144,8 @@ function NavLinks({ className }: { className?: string }) {
 
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden border-t border-secondary-border bg-secondary text-secondary-foreground">
-      <div className="glow-blob -top-32 -left-24 size-80 bg-primary/25" />
-      <div className="glow-blob -right-24 -bottom-32 size-80 bg-accent/15" />
+    <footer className="relative mt-10 overflow-hidden border-t border-white/10 bg-secondary/70 text-secondary-foreground backdrop-blur-xl">
+      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-primary),var(--color-accent),transparent)]" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <Brand tone="light" />
@@ -188,224 +188,117 @@ export function SiteFooter() {
             >
               <Facebook className="size-4" /> Facebook
             </a>
-            <span className="w-fit rounded-full border border-secondary-border px-3 py-1 text-xs font-semibold text-secondary-foreground">
+            <span className="w-fit rounded-full border border-white/10 px-3 py-1 text-xs font-semibold text-secondary-foreground">
               RGE QualiPAC · Artisan CMA
             </span>
           </div>
         </div>
       </div>
-      <div className="relative border-t border-secondary-border py-6 text-center text-xs text-secondary-muted">
+      <div className="relative border-t border-white/10 py-6 text-center text-xs text-secondary-muted">
         © 2026 RegisClim · Site original réalisé par Charles Pons
       </div>
     </footer>
   );
 }
 
-type PageHeroVariant = "dark" | "split" | "light" | "image" | "warm" | "minimal";
-
 export function PageHero({
   eyebrow,
   title,
   children,
-  variant = "dark",
   image,
   imageAlt = "",
+  icon,
 }: {
   eyebrow: string;
   title: string;
   children: ReactNode;
-  variant?: PageHeroVariant;
   image?: string;
   imageAlt?: string;
+  icon?: ReactNode;
 }) {
-  if (variant === "split") {
-    return (
-      <section className="border-b border-border bg-muted">
-        <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
-          <div className="animate-rise flex flex-col justify-center px-5 py-16 sm:px-8 lg:py-24 lg:pr-16">
-            <p className="eyebrow text-accent">{eyebrow}</p>
-            <h1 className="mt-5 font-display text-4xl leading-[1.08] font-bold sm:text-6xl">
-              {title}
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">{children}</p>
-            <span className="bg-gradient-warm mt-10 h-1 w-24" />
-          </div>
-          {image && (
-            <img
-              src={image}
-              width={1200}
-              height={900}
-              alt={imageAlt}
-              className="aspect-[4/3] size-full object-cover lg:aspect-auto lg:[clip-path:polygon(12%_0,100%_0,100%_100%,0_100%)]"
-            />
-          )}
-        </div>
-      </section>
-    );
-  }
-
-  if (variant === "light") {
-    return (
-      <section className="relative overflow-hidden px-5 pt-16 pb-8 text-center sm:pt-24">
-        <div className="glow-blob top-0 left-1/2 size-[28rem] -translate-x-1/2 bg-primary/10" />
-        <div className="animate-rise relative mx-auto max-w-4xl">
-          <p className="eyebrow text-primary">{eyebrow}</p>
-          <h1 className="mt-5 font-display text-5xl leading-[1.02] font-bold sm:text-7xl">
-            {title}
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-            {children}
-          </p>
-          <div className="mx-auto mt-12 flex max-w-xs items-center gap-3">
-            <span className="h-px flex-1 bg-border" />
-            <Snowflake className="size-4 text-primary" />
-            <Flame className="size-4 text-accent" />
-            <span className="h-px flex-1 bg-border" />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (variant === "image") {
-    return (
-      <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-secondary text-secondary-foreground">
-        {image && (
-          <img
-            src={image}
-            width={1600}
-            height={1000}
-            alt={imageAlt}
-            className="absolute inset-0 size-full object-cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-secondary/10" />
-        <div className="animate-rise relative mx-auto w-full max-w-7xl px-5 pt-32 pb-14 sm:px-8 sm:pb-20">
-          <p className="eyebrow text-accent">{eyebrow}</p>
-          <h1 className="mt-4 max-w-4xl font-display text-4xl leading-[1.05] font-bold sm:text-7xl">
-            {title}
-          </h1>
-          <p className="mt-6 max-w-2xl border-l-2 border-accent pl-5 text-lg leading-8 text-secondary-foreground/85">
-            {children}
-          </p>
-        </div>
-      </section>
-    );
-  }
-
-  if (variant === "warm") {
-    return (
-      <section className="bg-gradient-warm relative overflow-hidden text-accent-foreground">
-        <div className="grid-pattern absolute inset-0 opacity-50" />
-        <div className="animate-rise relative mx-auto grid max-w-7xl items-end gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <p className="eyebrow text-accent-foreground/80">{eyebrow}</p>
-            <h1 className="mt-4 font-display text-5xl leading-[1.02] font-bold sm:text-7xl">
-              {title}
-            </h1>
-          </div>
-          <p className="text-lg leading-8 text-accent-foreground/90 lg:pb-3">{children}</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (variant === "minimal") {
-    return (
-      <section className="border-b border-border">
-        <div className="animate-rise mx-auto max-w-5xl px-5 pt-14 pb-10 sm:px-8 sm:pt-20">
-          <p className="eyebrow text-muted-foreground">{eyebrow}</p>
-          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl">{title}</h1>
-          <p className="mt-4 max-w-2xl text-muted-foreground">{children}</p>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="px-3 sm:px-5">
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-secondary text-secondary-foreground">
-        <div className="grid-pattern absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
-        <div className="glow-blob -top-24 right-0 size-96 bg-primary/40" />
-        <div className="glow-blob -bottom-40 right-1/3 size-80 bg-accent/25" />
-        <div className="animate-rise relative px-6 py-16 sm:px-12 sm:py-24">
-          <p className="eyebrow-pill border border-white/15 bg-white/10 text-secondary-foreground backdrop-blur">
-            <span className="size-1.5 rounded-full bg-accent" />
+    <section className="relative mx-auto max-w-7xl px-5 pt-14 pb-6 sm:px-8 sm:pt-20">
+      <div
+        className={cn(
+          "grid items-center gap-12",
+          image ? "lg:grid-cols-[1.15fr_1fr]" : "text-center",
+        )}
+      >
+        <div className={cn(!image && "mx-auto max-w-4xl")}>
+          <p className="eyebrow-pill animate-rise text-foreground/90">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
+              <span className="relative inline-flex size-2 rounded-full bg-accent" />
+            </span>
             {eyebrow}
           </p>
-          <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.1] font-bold sm:text-6xl">
-            {title}
+          <h1 className="mt-6 font-display text-4xl leading-[1.05] font-bold sm:text-6xl lg:text-7xl">
+            <SplitWords text={title} delay={100} />
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-secondary-muted sm:text-lg">
+          <p
+            className={cn(
+              "animate-rise mt-7 max-w-2xl text-lg leading-8 text-muted-foreground [animation-delay:500ms]",
+              !image && "mx-auto",
+            )}
+          >
             {children}
           </p>
         </div>
+        {image ? (
+          <div className="animate-rise relative [animation-delay:300ms]">
+            <div className="bg-gradient-cool absolute -inset-4 rounded-[3rem] opacity-30 blur-2xl" />
+            <div className="float-slow glow-border relative overflow-hidden rounded-[2.5rem_0.75rem_2.5rem_0.75rem]">
+              <img
+                src={image}
+                width={1200}
+                height={900}
+                alt={imageAlt}
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
+            {icon && (
+              <div className="float-slower glass absolute -bottom-6 -left-4 grid size-20 place-items-center rounded-2xl text-accent sm:-left-8">
+                {icon}
+              </div>
+            )}
+          </div>
+        ) : (
+          icon && (
+            <div className="animate-rise mx-auto -mt-2 flex items-center gap-4 text-primary [animation-delay:700ms]">
+              <span className="h-px w-16 bg-gradient-to-r from-transparent to-primary" />
+              {icon}
+              <span className="h-px w-16 bg-gradient-to-l from-transparent to-accent" />
+            </div>
+          )
+        )}
       </div>
     </section>
   );
 }
 
-export function ContactBand({
-  title = "Parlons de votre projet",
-  variant = "gradient",
-}: {
-  title?: string;
-  variant?: "gradient" | "dark" | "light";
-}) {
-  const intro = "Un interlocuteur unique pour étudier la solution adaptée à vos besoins.";
-  const call = (
-    <Button asChild size="hero" variant="warm">
-      <a href="tel:0767875716">
-        <Phone /> 07 67 87 57 16
-      </a>
-    </Button>
-  );
-
-  if (variant === "dark") {
-    return (
-      <section className="bg-secondary text-secondary-foreground">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-16 sm:px-8 md:grid-cols-[auto_1fr_auto] md:gap-12">
-          <p className="eyebrow text-accent md:[writing-mode:vertical-rl] md:rotate-180">
-            Conseil personnalisé
-          </p>
-          <div className="md:border-l md:border-secondary-border md:pl-12">
-            <h2 className="font-display text-3xl font-bold sm:text-4xl">{title}</h2>
-            <p className="mt-3 max-w-xl text-secondary-muted">{intro}</p>
-          </div>
-          {call}
-        </div>
-      </section>
-    );
-  }
-
-  if (variant === "light") {
-    return (
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-3xl px-5 py-20 text-center sm:px-8">
-          <p className="eyebrow text-primary">Conseil personnalisé</p>
-          <h2 className="mt-4 font-display text-4xl font-bold sm:text-5xl">{title}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{intro}</p>
-          <div className="mt-8">{call}</div>
-        </div>
-      </section>
-    );
-  }
-
+export function ContactBand({ title = "Parlons de votre projet" }: { title?: string }) {
   return (
-    <section className="px-3 pb-16 sm:px-5 sm:pb-24">
-      <div className="bg-gradient-cool relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] text-primary-foreground shadow-[var(--shadow-lift)]">
-        <div className="grid-pattern absolute inset-0 opacity-60" />
-        <div className="glow-blob -top-20 -right-10 size-72 bg-white/25" />
-        <div className="glow-blob -bottom-24 left-1/4 size-72 bg-accent/40" />
-        <div className="relative flex flex-col items-start justify-between gap-8 px-6 py-12 sm:px-12 sm:py-14 md:flex-row md:items-center">
-          <div>
-            <p className="eyebrow text-primary-foreground/75">Conseil personnalisé</p>
-            <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{title}</h2>
-            <p className="mt-3 max-w-xl text-primary-foreground/85">{intro}</p>
+    <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
+      <Reveal>
+        <div className="glow-border spotlight relative overflow-hidden rounded-[2rem] bg-secondary/60 backdrop-blur-xl">
+          <div className="glow-blob -top-24 -right-16 size-80 bg-primary/30" />
+          <div className="glow-blob -bottom-24 -left-10 size-72 bg-accent/25" />
+          <div className="relative flex flex-col items-start justify-between gap-8 px-6 py-12 sm:px-12 sm:py-16 md:flex-row md:items-center">
+            <div>
+              <p className="eyebrow text-accent">Conseil personnalisé</p>
+              <h2 className="mt-3 font-display text-3xl font-bold sm:text-5xl">{title}</h2>
+              <p className="mt-4 max-w-xl text-muted-foreground">
+                Un interlocuteur unique pour étudier la solution adaptée à vos besoins.
+              </p>
+            </div>
+            <Button asChild size="hero" variant="warm" className="btn-shine shrink-0">
+              <a href="tel:0767875716">
+                <Phone /> 07 67 87 57 16
+              </a>
+            </Button>
           </div>
-          {call}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
