@@ -1,15 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import {
-  ArrowUpRight,
-  Clock3,
-  Facebook,
-  Flame,
-  MapPin,
-  Menu,
-  Phone,
-  Snowflake,
-  X,
-} from "lucide-react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { Clock3, Facebook, Flame, MapPin, Phone, Snowflake } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -43,7 +33,6 @@ export function Brand({ tone = "dark" }: { tone?: "dark" | "light" }) {
 }
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const barsRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(112);
@@ -88,75 +77,67 @@ export function SiteHeader() {
           <div className="px-3 pt-3 sm:px-5">
             <div
               className={cn(
-                "mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl border px-4 backdrop-blur-xl transition-all duration-300 sm:px-5",
-                scrolled || open
-                  ? "border-border/80 bg-background/85 shadow-[var(--shadow-soft)]"
-                  : "border-transparent bg-background/60",
+                "mx-auto max-w-7xl rounded-2xl border backdrop-blur-xl transition-all duration-300",
+                scrolled
+                  ? "border-border/80 bg-background/95 shadow-[var(--shadow-soft)]"
+                  : "border-transparent bg-background/80",
               )}
             >
-              <Brand />
-              <nav
-                className="hidden items-center gap-1 rounded-full border border-border/70 bg-muted/60 p-1 lg:flex"
-                aria-label="Navigation principale"
-              >
-                {navItems.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    activeOptions={{ exact: item.to === "/" }}
-                    className="rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground transition-all hover:text-foreground"
-                    activeProps={{ className: "bg-background text-primary! shadow-sm" }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-              <Button asChild variant="warm" className="hidden md:inline-flex">
-                <a href="tel:0767875716">
-                  <Phone /> Appeler Régis
-                </a>
-              </Button>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="rounded-xl hover:bg-muted hover:text-foreground lg:hidden"
-                aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-                onClick={() => setOpen(!open)}
-              >
-                {open ? <X /> : <Menu />}
-              </Button>
+              <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-5">
+                <Brand />
+                <NavLinks className="hidden lg:flex" />
+                <Button asChild variant="warm" className="shrink-0">
+                  <a href="tel:0767875716" aria-label="Appeler Régis au 07 67 87 57 16">
+                    <Phone /> <span className="hidden sm:inline">Appeler Régis</span>
+                  </a>
+                </Button>
+              </div>
+              <div className="border-t border-border/60 px-2 py-1.5 lg:hidden">
+                <NavLinks className="flex rounded-none border-0 bg-transparent px-1 [mask-image:linear-gradient(to_right,transparent,black_12px,black_calc(100%-28px),transparent)]" />
+              </div>
             </div>
           </div>
         </div>
-        {open && (
-          <div className="px-3 pt-2 pb-3 sm:px-5 lg:hidden">
-            <nav
-              className="animate-rise mx-auto grid max-w-7xl gap-1 rounded-2xl border border-border/80 bg-background/95 p-3 shadow-[var(--shadow-lift)] backdrop-blur-xl"
-              aria-label="Navigation mobile"
-            >
-              {navItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  activeOptions={{ exact: item.to === "/" }}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors hover:bg-muted"
-                  activeProps={{ className: "bg-primary/10 text-primary" }}
-                >
-                  {item.label}
-                  <ArrowUpRight className="size-4 opacity-40" />
-                </Link>
-              ))}
-              <Button asChild variant="warm" size="lg" className="mt-2">
-                <a href="tel:0767875716">
-                  <Phone /> 07 67 87 57 16
-                </a>
-              </Button>
-            </nav>
-          </div>
-        )}
       </header>
     </>
+  );
+}
+
+function NavLinks({ className }: { className?: string }) {
+  const navRef = useRef<HTMLElement>(null);
+  const pathname = useLocation({ select: (location) => location.pathname });
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const active = nav?.querySelector<HTMLElement>("[data-status='active']");
+    if (!nav || !active) return;
+    nav.scrollTo({
+      left: active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2,
+      behavior: "smooth",
+    });
+  }, [pathname]);
+
+  return (
+    <nav
+      ref={navRef}
+      className={cn(
+        "relative items-center gap-1 overflow-x-auto rounded-full border border-border/70 bg-muted/60 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        className,
+      )}
+      aria-label="Navigation principale"
+    >
+      {navItems.map((item) => (
+        <Link
+          key={item.to}
+          to={item.to}
+          activeOptions={{ exact: item.to === "/" }}
+          className="shrink-0 rounded-full px-3 py-2 text-[13px] font-semibold sm:px-4 sm:text-sm whitespace-nowrap text-muted-foreground transition-all hover:text-foreground"
+          activeProps={{ className: "bg-background text-primary! shadow-sm" }}
+        >
+          {item.label}
+        </Link>
+      ))}
+    </nav>
   );
 }
 
