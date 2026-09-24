@@ -10,33 +10,105 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AidesEtSubventionsRouteImport } from './routes/aides-et-subventions'
+import { Route as ClimatisationPourVotreMaisonRouteImport } from './routes/climatisation-pour-votre-maison'
+import { Route as InstallationDeClimatisationANimesRouteImport } from './routes/installation-de-climatisation-a-nimes'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
+import { Route as PoseEtEntretienDeClimatisationRouteImport } from './routes/pose-et-entretien-de-climatisation'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AidesEtSubventionsRoute = AidesEtSubventionsRouteImport.update({
+  id: '/aides-et-subventions',
+  path: '/aides-et-subventions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClimatisationPourVotreMaisonRoute =
+  ClimatisationPourVotreMaisonRouteImport.update({
+    id: '/climatisation-pour-votre-maison',
+    path: '/climatisation-pour-votre-maison',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const InstallationDeClimatisationANimesRoute =
+  InstallationDeClimatisationANimesRouteImport.update({
+    id: '/installation-de-climatisation-a-nimes',
+    path: '/installation-de-climatisation-a-nimes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoseEtEntretienDeClimatisationRoute =
+  PoseEtEntretienDeClimatisationRouteImport.update({
+    id: '/pose-et-entretien-de-climatisation',
+    path: '/pose-et-entretien-de-climatisation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aides-et-subventions': typeof AidesEtSubventionsRoute
+  '/climatisation-pour-votre-maison': typeof ClimatisationPourVotreMaisonRoute
+  '/installation-de-climatisation-a-nimes': typeof InstallationDeClimatisationANimesRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/pose-et-entretien-de-climatisation': typeof PoseEtEntretienDeClimatisationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aides-et-subventions': typeof AidesEtSubventionsRoute
+  '/climatisation-pour-votre-maison': typeof ClimatisationPourVotreMaisonRoute
+  '/installation-de-climatisation-a-nimes': typeof InstallationDeClimatisationANimesRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/pose-et-entretien-de-climatisation': typeof PoseEtEntretienDeClimatisationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aides-et-subventions': typeof AidesEtSubventionsRoute
+  '/climatisation-pour-votre-maison': typeof ClimatisationPourVotreMaisonRoute
+  '/installation-de-climatisation-a-nimes': typeof InstallationDeClimatisationANimesRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
+  '/pose-et-entretien-de-climatisation': typeof PoseEtEntretienDeClimatisationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/aides-et-subventions'
+    | '/climatisation-pour-votre-maison'
+    | '/installation-de-climatisation-a-nimes'
+    | '/mentions-legales'
+    | '/pose-et-entretien-de-climatisation'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/aides-et-subventions'
+    | '/climatisation-pour-votre-maison'
+    | '/installation-de-climatisation-a-nimes'
+    | '/mentions-legales'
+    | '/pose-et-entretien-de-climatisation'
+  id:
+    | '__root__'
+    | '/'
+    | '/aides-et-subventions'
+    | '/climatisation-pour-votre-maison'
+    | '/installation-de-climatisation-a-nimes'
+    | '/mentions-legales'
+    | '/pose-et-entretien-de-climatisation'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AidesEtSubventionsRoute: typeof AidesEtSubventionsRoute
+  ClimatisationPourVotreMaisonRoute: typeof ClimatisationPourVotreMaisonRoute
+  InstallationDeClimatisationANimesRoute: typeof InstallationDeClimatisationANimesRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
+  PoseEtEntretienDeClimatisationRoute: typeof PoseEtEntretienDeClimatisationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +120,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aides-et-subventions': {
+      id: '/aides-et-subventions'
+      path: '/aides-et-subventions'
+      fullPath: '/aides-et-subventions'
+      preLoaderRoute: typeof AidesEtSubventionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/climatisation-pour-votre-maison': {
+      id: '/climatisation-pour-votre-maison'
+      path: '/climatisation-pour-votre-maison'
+      fullPath: '/climatisation-pour-votre-maison'
+      preLoaderRoute: typeof ClimatisationPourVotreMaisonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/installation-de-climatisation-a-nimes': {
+      id: '/installation-de-climatisation-a-nimes'
+      path: '/installation-de-climatisation-a-nimes'
+      fullPath: '/installation-de-climatisation-a-nimes'
+      preLoaderRoute: typeof InstallationDeClimatisationANimesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pose-et-entretien-de-climatisation': {
+      id: '/pose-et-entretien-de-climatisation'
+      path: '/pose-et-entretien-de-climatisation'
+      fullPath: '/pose-et-entretien-de-climatisation'
+      preLoaderRoute: typeof PoseEtEntretienDeClimatisationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AidesEtSubventionsRoute: AidesEtSubventionsRoute,
+  ClimatisationPourVotreMaisonRoute: ClimatisationPourVotreMaisonRoute,
+  InstallationDeClimatisationANimesRoute:
+    InstallationDeClimatisationANimesRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
+  PoseEtEntretienDeClimatisationRoute: PoseEtEntretienDeClimatisationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
