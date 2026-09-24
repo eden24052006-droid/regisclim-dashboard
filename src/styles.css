@@ -81,7 +81,7 @@
   --secondary-border: oklch(1 0 0 / 10%);
   --muted: oklch(0.21 0.035 256);
   --muted-foreground: oklch(0.74 0.025 245);
-  --accent: oklch(0.73 0.18 48);
+  --accent: oklch(0.63 0.22 25);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.984 0.003 247.858);
@@ -89,12 +89,12 @@
   --input: oklch(1 0 0 / 14%);
   --ring: oklch(0.72 0.14 222);
   --gradient-cool: linear-gradient(135deg, oklch(0.7 0.14 210), oklch(0.52 0.18 258));
-  --gradient-warm: linear-gradient(135deg, oklch(0.8 0.16 70), oklch(0.66 0.21 35));
+  --gradient-warm: linear-gradient(135deg, oklch(0.68 0.21 29), oklch(0.53 0.21 22));
   --gradient-text: linear-gradient(
     90deg,
     oklch(0.8 0.12 210),
     oklch(0.75 0.15 250),
-    oklch(0.78 0.17 50),
+    oklch(0.7 0.2 25),
     oklch(0.8 0.12 210)
   );
   --shadow-soft: 0 1px 0 oklch(1 0 0 / 5%) inset, 0 20px 40px -20px oklch(0 0 0 / 60%);
@@ -261,7 +261,7 @@
       from var(--angle),
       oklch(0.72 0.14 222 / 10%),
       oklch(0.72 0.14 222),
-      oklch(0.73 0.18 48),
+      oklch(0.63 0.22 25),
       oklch(0.72 0.14 222 / 10%) 60%,
       oklch(0.72 0.14 222 / 10%)
     );
@@ -285,7 +285,7 @@
   }
   .icon-badge-warm {
     background: var(--gradient-warm);
-    box-shadow: 0 10px 30px -8px oklch(0.66 0.21 35 / 60%);
+    box-shadow: 0 10px 30px -8px oklch(0.55 0.21 22 / 60%);
   }
   .text-gradient-cool {
     background: var(--gradient-cool);
