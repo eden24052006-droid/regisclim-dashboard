@@ -283,7 +283,10 @@ export function ContactBand({ title = "Parlons de votre projet" }: { title?: str
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
       <Reveal>
-        <div className="glow-border spotlight relative overflow-hidden rounded-[2rem] bg-secondary/60 backdrop-blur-xl">
+        <div
+          data-wind
+          className="glow-border spotlight relative overflow-hidden rounded-[2rem] bg-secondary/60 backdrop-blur-xl"
+        >
           <div className="glow-blob -top-24 -right-16 size-80 bg-primary/30" />
           <div className="glow-blob -bottom-24 -left-10 size-72 bg-accent/25" />
           <div className="relative flex flex-col items-start justify-between gap-8 px-6 py-12 sm:px-12 sm:py-16 md:flex-row md:items-center">
