@@ -12,7 +12,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ContactBand, SectionHeading } from "@/components/site-layout";
+import { ContactBand } from "@/components/site-layout";
 import heroImage from "@/assets/regisclim-hero.jpg";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 
@@ -135,94 +135,92 @@ function Index() {
         </div>
       </section>
 
-      <section id="solutions" className="content-shell scroll-mt-32">
-        <div className="grid gap-6 md:grid-cols-2">
-          <article className="surface-card surface-card-hover group relative overflow-hidden p-8 sm:p-10">
-            <div className="glow-blob -top-16 -right-16 size-48 bg-primary/15" />
-            <div className="icon-badge relative">
-              <Home className="size-6" />
-            </div>
-            <p className="eyebrow relative mt-8 text-primary">Habitat</p>
-            <h2 className="relative mt-2 font-display text-3xl font-bold">Climatisation</h2>
-            <p className="relative mt-4 leading-7 text-muted-foreground">
-              Profitez de l’avis d’un professionnel pour une climatisation adaptée à votre espace de
-              vie sur Nîmes et ses environs.
-            </p>
-          </article>
-          <article className="surface-card surface-card-hover group relative overflow-hidden p-8 sm:p-10">
-            <div className="glow-blob -top-16 -right-16 size-48 bg-accent/15" />
-            <div className="icon-badge icon-badge-warm relative">
-              <Building2 className="size-6" />
-            </div>
-            <p className="eyebrow relative mt-8 text-accent">Entreprise</p>
-            <h2 className="relative mt-2 font-display text-3xl font-bold">Climatisation</h2>
-            <p className="relative mt-4 leading-7 text-muted-foreground">
-              Des conditions de travail adaptées grâce à une solution d’air conditionné conçue pour
-              vos locaux professionnels.
-            </p>
-          </article>
-        </div>
+      <section id="solutions" className="mt-12 grid scroll-mt-32 md:grid-cols-2">
+        <article className="bg-gradient-cool group relative overflow-hidden px-6 py-16 text-primary-foreground sm:px-12 sm:py-20 lg:pl-[max(3rem,calc((100vw-80rem)/2+2rem))]">
+          <Home className="absolute -right-8 -bottom-10 size-64 opacity-10 transition-transform duration-700 group-hover:scale-110" />
+          <p className="eyebrow relative text-primary-foreground/75">Habitat</p>
+          <h2 className="relative mt-3 font-display text-4xl font-bold sm:text-5xl">
+            Climatisation
+          </h2>
+          <p className="relative mt-5 max-w-md text-lg leading-8 text-primary-foreground/90">
+            Profitez de l’avis d’un professionnel pour une climatisation adaptée à votre espace de
+            vie sur Nîmes et ses environs.
+          </p>
+        </article>
+        <article className="group relative overflow-hidden bg-secondary px-6 py-16 text-secondary-foreground sm:px-12 sm:py-20">
+          <Building2 className="absolute -right-8 -bottom-10 size-64 text-accent opacity-15 transition-transform duration-700 group-hover:scale-110" />
+          <p className="eyebrow relative text-accent">Entreprise</p>
+          <h2 className="relative mt-3 font-display text-4xl font-bold sm:text-5xl">
+            Climatisation
+          </h2>
+          <p className="relative mt-5 max-w-md text-lg leading-8 text-secondary-muted">
+            Des conditions de travail adaptées grâce à une solution d’air conditionné conçue pour
+            vos locaux professionnels.
+          </p>
+        </article>
       </section>
 
-      <section className="px-3 sm:px-5">
-        <div className="mx-auto max-w-7xl rounded-[2rem] bg-muted">
-          <div className="content-shell">
-            <SectionHeading
-              eyebrow="Nos engagements"
-              tone="accent"
-              align="center"
-              title="Du conseil juste, du matériel fiable."
-            />
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {commitments.map(({ icon: Icon, title, text }) => (
-                <article key={title} className="surface-card surface-card-hover p-8">
-                  <div className="icon-badge">
-                    <Icon className="size-6" />
-                  </div>
-                  <h3 className="mt-6 font-display text-xl font-bold">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">{text}</p>
-                </article>
-              ))}
-            </div>
+      <section className="content-shell">
+        <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-16">
+          <div>
+            <p className="eyebrow text-accent">Nos engagements</p>
+            <h2 className="mt-4 font-display text-4xl leading-tight font-bold sm:text-5xl">
+              Du conseil juste, du matériel fiable.
+            </h2>
           </div>
+          <ol className="divide-y divide-border border-y border-border">
+            {commitments.map(({ icon: Icon, title, text }, i) => (
+              <li
+                key={title}
+                className="group grid grid-cols-[auto_1fr] items-start gap-6 py-8 sm:grid-cols-[5rem_12rem_1fr] sm:items-center"
+              >
+                <span className="text-gradient-warm font-display text-5xl font-bold">0{i + 1}</span>
+                <h3 className="flex items-center gap-3 font-display text-xl font-bold">
+                  <Icon className="size-5 text-primary" />
+                  {title}
+                </h3>
+                <p className="col-span-2 leading-7 text-muted-foreground sm:col-span-1">{text}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
-      <section className="content-shell grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        <div className="relative">
-          <div className="bg-gradient-cool absolute -inset-3 -rotate-2 rounded-[2rem] opacity-15" />
+      <section className="bg-muted">
+        <div className="mx-auto grid max-w-7xl items-stretch lg:grid-cols-2">
           <img
             src={technicianImage}
             loading="lazy"
             width={1200}
             height={900}
             alt="Technicien entretenant une climatisation"
-            className="relative aspect-[4/3] size-full rounded-[1.75rem] object-cover shadow-[var(--shadow-lift)]"
+            className="aspect-[4/3] size-full object-cover lg:aspect-auto"
           />
-        </div>
-        <div>
-          <SectionHeading
-            eyebrow="Savoir-faire complet"
-            title="Installation, entretien et solutions thermiques."
-          />
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {expertise.map(({ icon: Icon, title, text }) => (
-              <div key={title} className="surface-card surface-card-hover p-5">
-                <div className="grid size-10 place-items-center rounded-xl bg-accent/10 text-accent">
-                  <Icon className="size-5" />
+          <div className="px-5 py-16 sm:px-12 lg:py-20">
+            <p className="eyebrow text-primary">Savoir-faire complet</p>
+            <h2 className="mt-4 font-display text-3xl leading-tight font-bold sm:text-4xl">
+              Installation, entretien et solutions thermiques.
+            </h2>
+            <dl className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2">
+              {expertise.map(({ icon: Icon, title, text }) => (
+                <div key={title} className="border-t-2 border-accent pt-4">
+                  <dt className="flex items-center gap-2 font-display text-base font-bold">
+                    <Icon className="size-4 text-accent" />
+                    {title}
+                  </dt>
+                  <dd className="mt-2 text-sm leading-6 text-muted-foreground">{text}</dd>
                 </div>
-                <h3 className="mt-4 font-display text-base font-bold">{title}</h3>
-                <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{text}</p>
-              </div>
-            ))}
+              ))}
+            </dl>
+            <Button asChild variant="hero" size="hero" className="mt-10">
+              <a href="/installation-de-climatisation-a-nimes">
+                Voir les installations <ArrowRight />
+              </a>
+            </Button>
           </div>
-          <Button asChild variant="hero" size="hero" className="mt-8">
-            <a href="/installation-de-climatisation-a-nimes">
-              Voir les installations <ArrowRight />
-            </a>
-          </Button>
         </div>
       </section>
+      <div className="h-16 sm:h-24" />
       <ContactBand />
     </>
   );

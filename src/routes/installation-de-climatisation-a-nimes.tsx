@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AirVent, ArrowRight, Droplets, HousePlug, Scale, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ContactBand, PageHero, SectionHeading } from "@/components/site-layout";
+import { ContactBand, PageHero } from "@/components/site-layout";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 
 export const Route = createFileRoute("/installation-de-climatisation-a-nimes")({
@@ -53,69 +53,78 @@ const equipment = [
 function InstallationPage() {
   return (
     <>
-      <PageHero eyebrow="Étude & pose" title="Installation de climatisation à Nîmes">
+      <PageHero
+        variant="split"
+        image={technicianImage}
+        imageAlt="Installation professionnelle d’une climatisation"
+        eyebrow="Étude & pose"
+        title="Installation de climatisation à Nîmes"
+      >
         Régis Garnier installe des climatisations chez les particuliers et les professionnels à
         Nîmes et ses environs.
       </PageHero>
       <section className="content-shell">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div>
-            <img
-              src={technicianImage}
-              loading="lazy"
-              width={1200}
-              height={900}
-              alt="Installation professionnelle d’une climatisation"
-              className="aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-[var(--shadow-lift)]"
-            />
-            <aside className="surface-card relative mt-5 flex gap-4 overflow-hidden p-6 text-sm leading-7 text-muted-foreground">
-              <span className="bg-gradient-warm absolute inset-y-0 left-0 w-1.5" />
-              <ShieldCheck className="mt-1 size-5 shrink-0 text-accent" />
-              Le Code de l’environnement prévoit que seul un professionnel habilité peut mettre une
-              climatisation en service.
-            </aside>
-          </div>
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
           <div className="prose-copy">
-            <SectionHeading eyebrow="Réglementation" title="Une solution adaptée à chaque lieu" />
-            <p className="mt-6!">
+            <p className="eyebrow text-primary">Réglementation</p>
+            <h2 className="mt-3! text-4xl!">Une solution adaptée à chaque lieu</h2>
+            <p className="mt-6! text-lg">
               L’installation d’une climatisation exige un spécialiste qualifié. À la maison, au
               bureau ou dans un magasin, l’objectif est d’apporter confort et bien-être en
               respectant les contraintes techniques, l’esthétique et le bon dimensionnement.
             </p>
-            <p>
+            <p className="text-lg">
               Après une expertise technique de votre logement ou local, Régis Garnier vous propose
               la solution la plus adaptée. Il reste votre interlocuteur unique pour simplifier tous
               les échanges.
             </p>
           </div>
+          <aside className="self-start bg-secondary p-8 text-secondary-foreground sm:p-10">
+            <ShieldCheck className="size-10 text-accent" />
+            <p className="mt-6 font-display text-xl leading-9 font-semibold">
+              Le Code de l’environnement prévoit que seul un professionnel habilité peut mettre une
+              climatisation en service.
+            </p>
+          </aside>
         </div>
-        <div className="mt-20 grid gap-5 md:grid-cols-2">
+      </section>
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
           {equipment.map(({ icon: Icon, title, text }, i) => (
-            <article key={title} className="surface-card surface-card-hover p-8 sm:p-10">
-              <div className={i % 2 ? "icon-badge icon-badge-warm" : "icon-badge"}>
-                <Icon className="size-6" />
-              </div>
-              <h2 className="mt-6 font-display text-2xl font-bold">{title}</h2>
-              <p className="mt-3 leading-7 text-muted-foreground">{text}</p>
+            <article
+              key={title}
+              className="group grid gap-4 border-b border-border py-10 transition-colors sm:grid-cols-[6rem_1fr] lg:grid-cols-[8rem_1fr_1.3fr] lg:items-center lg:gap-10"
+            >
+              <span className="font-display text-6xl font-bold text-border transition-colors group-hover:text-primary">
+                0{i + 1}
+              </span>
+              <h2 className="flex items-center gap-3 font-display text-2xl font-bold">
+                <Icon className="size-6 shrink-0 text-accent" />
+                {title}
+              </h2>
+              <p className="leading-7 text-muted-foreground sm:col-start-2 lg:col-start-3">
+                {text}
+              </p>
             </article>
           ))}
         </div>
-        <div className="relative mt-16 overflow-hidden rounded-[2rem] bg-muted px-6 py-14 text-center sm:px-12">
-          <div className="glow-blob -top-24 left-1/2 size-72 -translate-x-1/2 bg-primary/15" />
-          <h2 className="relative font-display text-3xl font-bold sm:text-4xl">
+      </section>
+      <section className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 py-16 sm:px-8 md:flex-row md:items-center">
+        <div>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">
             C’est un de vos futurs projets ?
           </h2>
-          <p className="relative mx-auto mt-3 max-w-2xl text-muted-foreground">
+          <p className="mt-3 max-w-2xl text-muted-foreground">
             Découvrez les aides disponibles pour concrétiser votre installation.
           </p>
-          <Button asChild size="hero" className="relative mt-7">
-            <Link to="/aides-et-subventions">
-              Je découvre mes aides <ArrowRight />
-            </Link>
-          </Button>
         </div>
+        <Button asChild size="hero" className="shrink-0">
+          <Link to="/aides-et-subventions">
+            Je découvre mes aides <ArrowRight />
+          </Link>
+        </Button>
       </section>
-      <ContactBand />
+      <ContactBand variant="dark" />
     </>
   );
 }
