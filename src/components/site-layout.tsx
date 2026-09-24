@@ -143,7 +143,7 @@ function NavLinks({ className }: { className?: string }) {
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-8 overflow-hidden rounded-t-[2.5rem] bg-secondary text-secondary-foreground">
+    <footer className="relative overflow-hidden border-t border-secondary-border bg-secondary text-secondary-foreground">
       <div className="glow-blob -top-32 -left-24 size-80 bg-primary/25" />
       <div className="glow-blob -right-24 -bottom-32 size-80 bg-accent/15" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
@@ -201,15 +201,127 @@ export function SiteFooter() {
   );
 }
 
+type PageHeroVariant = "dark" | "split" | "light" | "image" | "warm" | "minimal";
+
 export function PageHero({
   eyebrow,
   title,
   children,
+  variant = "dark",
+  image,
+  imageAlt = "",
 }: {
   eyebrow: string;
   title: string;
   children: ReactNode;
+  variant?: PageHeroVariant;
+  image?: string;
+  imageAlt?: string;
 }) {
+  if (variant === "split") {
+    return (
+      <section className="border-b border-border bg-muted">
+        <div className="mx-auto grid max-w-7xl lg:grid-cols-2">
+          <div className="animate-rise flex flex-col justify-center px-5 py-16 sm:px-8 lg:py-24 lg:pr-16">
+            <p className="eyebrow text-accent">{eyebrow}</p>
+            <h1 className="mt-5 font-display text-4xl leading-[1.08] font-bold sm:text-6xl">
+              {title}
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">{children}</p>
+            <span className="bg-gradient-warm mt-10 h-1 w-24" />
+          </div>
+          {image && (
+            <img
+              src={image}
+              width={1200}
+              height={900}
+              alt={imageAlt}
+              className="aspect-[4/3] size-full object-cover lg:aspect-auto lg:[clip-path:polygon(12%_0,100%_0,100%_100%,0_100%)]"
+            />
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "light") {
+    return (
+      <section className="relative overflow-hidden px-5 pt-16 pb-8 text-center sm:pt-24">
+        <div className="glow-blob top-0 left-1/2 size-[28rem] -translate-x-1/2 bg-primary/10" />
+        <div className="animate-rise relative mx-auto max-w-4xl">
+          <p className="eyebrow text-primary">{eyebrow}</p>
+          <h1 className="mt-5 font-display text-5xl leading-[1.02] font-bold sm:text-7xl">
+            {title}
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+            {children}
+          </p>
+          <div className="mx-auto mt-12 flex max-w-xs items-center gap-3">
+            <span className="h-px flex-1 bg-border" />
+            <Snowflake className="size-4 text-primary" />
+            <Flame className="size-4 text-accent" />
+            <span className="h-px flex-1 bg-border" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "image") {
+    return (
+      <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-secondary text-secondary-foreground">
+        {image && (
+          <img
+            src={image}
+            width={1600}
+            height={1000}
+            alt={imageAlt}
+            className="absolute inset-0 size-full object-cover"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-secondary/10" />
+        <div className="animate-rise relative mx-auto w-full max-w-7xl px-5 pt-32 pb-14 sm:px-8 sm:pb-20">
+          <p className="eyebrow text-accent">{eyebrow}</p>
+          <h1 className="mt-4 max-w-4xl font-display text-4xl leading-[1.05] font-bold sm:text-7xl">
+            {title}
+          </h1>
+          <p className="mt-6 max-w-2xl border-l-2 border-accent pl-5 text-lg leading-8 text-secondary-foreground/85">
+            {children}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "warm") {
+    return (
+      <section className="bg-gradient-warm relative overflow-hidden text-accent-foreground">
+        <div className="grid-pattern absolute inset-0 opacity-50" />
+        <div className="animate-rise relative mx-auto grid max-w-7xl items-end gap-8 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.4fr_1fr]">
+          <div>
+            <p className="eyebrow text-accent-foreground/80">{eyebrow}</p>
+            <h1 className="mt-4 font-display text-5xl leading-[1.02] font-bold sm:text-7xl">
+              {title}
+            </h1>
+          </div>
+          <p className="text-lg leading-8 text-accent-foreground/90 lg:pb-3">{children}</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "minimal") {
+    return (
+      <section className="border-b border-border">
+        <div className="animate-rise mx-auto max-w-5xl px-5 pt-14 pb-10 sm:px-8 sm:pt-20">
+          <p className="eyebrow text-muted-foreground">{eyebrow}</p>
+          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl">{title}</h1>
+          <p className="mt-4 max-w-2xl text-muted-foreground">{children}</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="px-3 sm:px-5">
       <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-secondary text-secondary-foreground">
@@ -233,38 +345,52 @@ export function PageHero({
   );
 }
 
-export function SectionHeading({
-  eyebrow,
-  title,
-  tone = "primary",
-  align = "left",
-  className,
+export function ContactBand({
+  title = "Parlons de votre projet",
+  variant = "gradient",
 }: {
-  eyebrow: string;
-  title: ReactNode;
-  tone?: "primary" | "accent";
-  align?: "left" | "center";
-  className?: string;
+  title?: string;
+  variant?: "gradient" | "dark" | "light";
 }) {
-  return (
-    <div className={cn(align === "center" && "mx-auto text-center", "max-w-2xl", className)}>
-      <p
-        className={cn(
-          "eyebrow-pill",
-          tone === "accent" ? "bg-accent/10 text-accent" : "bg-primary/10 text-primary",
-        )}
-      >
-        <span
-          className={cn("size-1.5 rounded-full", tone === "accent" ? "bg-accent" : "bg-primary")}
-        />
-        {eyebrow}
-      </p>
-      <h2 className="mt-4 font-display text-3xl leading-tight font-bold sm:text-4xl">{title}</h2>
-    </div>
+  const intro = "Un interlocuteur unique pour étudier la solution adaptée à vos besoins.";
+  const call = (
+    <Button asChild size="hero" variant="warm">
+      <a href="tel:0767875716">
+        <Phone /> 07 67 87 57 16
+      </a>
+    </Button>
   );
-}
 
-export function ContactBand({ title = "Parlons de votre projet" }: { title?: string }) {
+  if (variant === "dark") {
+    return (
+      <section className="bg-secondary text-secondary-foreground">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-16 sm:px-8 md:grid-cols-[auto_1fr_auto] md:gap-12">
+          <p className="eyebrow text-accent md:[writing-mode:vertical-rl] md:rotate-180">
+            Conseil personnalisé
+          </p>
+          <div className="md:border-l md:border-secondary-border md:pl-12">
+            <h2 className="font-display text-3xl font-bold sm:text-4xl">{title}</h2>
+            <p className="mt-3 max-w-xl text-secondary-muted">{intro}</p>
+          </div>
+          {call}
+        </div>
+      </section>
+    );
+  }
+
+  if (variant === "light") {
+    return (
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-3xl px-5 py-20 text-center sm:px-8">
+          <p className="eyebrow text-primary">Conseil personnalisé</p>
+          <h2 className="mt-4 font-display text-4xl font-bold sm:text-5xl">{title}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">{intro}</p>
+          <div className="mt-8">{call}</div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="px-3 pb-16 sm:px-5 sm:pb-24">
       <div className="bg-gradient-cool relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] text-primary-foreground shadow-[var(--shadow-lift)]">
@@ -275,15 +401,9 @@ export function ContactBand({ title = "Parlons de votre projet" }: { title?: str
           <div>
             <p className="eyebrow text-primary-foreground/75">Conseil personnalisé</p>
             <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{title}</h2>
-            <p className="mt-3 max-w-xl text-primary-foreground/85">
-              Un interlocuteur unique pour étudier la solution adaptée à vos besoins.
-            </p>
+            <p className="mt-3 max-w-xl text-primary-foreground/85">{intro}</p>
           </div>
-          <Button asChild size="hero" variant="warm">
-            <a href="tel:0767875716">
-              <Phone /> 07 67 87 57 16
-            </a>
-          </Button>
+          {call}
         </div>
       </div>
     </section>

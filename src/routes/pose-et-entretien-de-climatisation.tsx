@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ContactBand, PageHero, SectionHeading } from "@/components/site-layout";
+import { ContactBand, PageHero } from "@/components/site-layout";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 
 export const Route = createFileRoute("/pose-et-entretien-de-climatisation")({
@@ -33,42 +33,53 @@ const prices = [
   ["Pompe à chaleur", "180 € TTC"],
   ["Ballon thermodynamique", "130 € TTC"],
 ];
+const benefits = [
+  "Prévention des fuites",
+  "Limitation des contaminations bactériennes ou fongiques",
+  "Réduction de la surconsommation",
+  "Durée de vie prolongée",
+];
+
 function EntretienPage() {
   return (
     <>
-      <PageHero eyebrow="Maintenance" title="Entretien de climatisation">
+      <PageHero variant="light" eyebrow="Maintenance" title="Entretien de climatisation">
         Régis Garnier entretient vos climatisations à Nîmes et ses environs, pour les particuliers
         comme les professionnels.
       </PageHero>
-      <section className="content-shell">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="prose-copy">
-            <SectionHeading
-              eyebrow="Prévenir plutôt que réparer"
-              title="Fiabilité, économie et air sain"
+      <section className="content-shell pt-12!">
+        <div className="grid items-start gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+          <div className="lg:sticky lg:top-40">
+            <img
+              src={technicianImage}
+              loading="lazy"
+              width={1200}
+              height={900}
+              alt="Entretien d’une unité de climatisation"
+              className="aspect-[4/5] w-full object-cover"
             />
-            <p className="mt-6!">
+          </div>
+          <div className="prose-copy">
+            <p className="eyebrow text-primary">Prévenir plutôt que réparer</p>
+            <h2 className="mt-3! text-4xl!">Fiabilité, économie et air sain</h2>
+            <p className="mt-6! text-lg">
               Un entretien régulier est nécessaire au bon fonctionnement de votre climatisation. Il
               prépare l’équipement à une utilisation intensive pendant les épisodes de canicule et
               garantit aussi votre confort en mode chauffage.
             </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {[
-                "Prévention des fuites",
-                "Limitation des contaminations bactériennes ou fongiques",
-                "Réduction de la surconsommation",
-                "Durée de vie prolongée",
-              ].map((x) => (
-                <p
-                  key={x}
-                  className="surface-card mt-0! flex items-start gap-3 rounded-2xl! p-4 text-sm leading-6! font-semibold text-foreground!"
-                >
-                  <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-accent" />
-                  {x}
-                </p>
+            <ol className="relative mt-10 ml-4 border-l-2 border-dashed border-primary/30">
+              {benefits.map((x, i) => (
+                <li key={x} className="relative pb-8 pl-10 last:pb-0">
+                  <span className="bg-gradient-cool absolute top-0 -left-[1.1rem] grid size-8 place-items-center rounded-full font-display text-sm font-bold text-primary-foreground ring-4 ring-background">
+                    {i + 1}
+                  </span>
+                  <p className="mt-0! pt-1 font-display text-lg leading-7! font-semibold text-foreground!">
+                    {x}
+                  </p>
+                </li>
               ))}
-            </div>
-            <p>
+            </ol>
+            <p className="mt-10!">
               Confier cette tâche à un spécialiste vous assure un travail rigoureux et un système
               fiable, économique et durable.
             </p>
@@ -79,51 +90,45 @@ function EntretienPage() {
               </a>
             </Button>
           </div>
-          <img
-            src={technicianImage}
-            loading="lazy"
-            width={1200}
-            height={900}
-            alt="Entretien d’une unité de climatisation"
-            className="aspect-[4/3] w-full rounded-[1.75rem] object-cover shadow-[var(--shadow-lift)]"
-          />
-        </div>
-        <div className="mt-24">
-          <SectionHeading
-            eyebrow="Tarifs TTC"
-            tone="accent"
-            align="center"
-            title="Entretien selon votre équipement"
-          />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {prices.map(([name, price]) => (
-              <article
-                key={name}
-                className="surface-card surface-card-hover relative flex flex-col justify-between overflow-hidden p-7"
-              >
-                <span className="bg-gradient-cool absolute inset-x-0 top-0 h-1" />
-                <h3 className="font-display text-lg font-semibold">{name}</h3>
-                <p className="text-gradient-cool mt-10 font-display text-3xl font-bold">{price}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-        <div className="surface-card mt-16 flex flex-col items-start justify-between gap-6 p-8 sm:p-10 md:flex-row md:items-center">
-          <div>
-            <h2 className="font-display text-3xl font-bold">Envie de nouveauté ?</h2>
-            <p className="mt-3 max-w-2xl text-muted-foreground">
-              Nous installons aussi des systèmes neufs adaptés à vos besoins de confort, de
-              performance et d’économies d’énergie.
-            </p>
-          </div>
-          <Button asChild size="lg" className="shrink-0">
-            <Link to="/installation-de-climatisation-a-nimes">
-              Nos solutions sur mesure <ArrowRight />
-            </Link>
-          </Button>
         </div>
       </section>
-      <ContactBand title="Planifier votre entretien" />
+      <section className="bg-secondary text-secondary-foreground">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[1fr_1.6fr] lg:py-28">
+          <div>
+            <p className="eyebrow text-accent">Tarifs TTC</p>
+            <h2 className="mt-4 font-display text-4xl leading-tight font-bold sm:text-5xl">
+              Entretien selon votre équipement
+            </h2>
+          </div>
+          <ul>
+            {prices.map(([name, price]) => (
+              <li
+                key={name}
+                className="flex items-baseline gap-4 border-b border-secondary-border py-6 first:pt-0"
+              >
+                <h3 className="min-w-0 font-display text-lg font-semibold sm:text-2xl">{name}</h3>
+                <span className="flex-1 translate-y-[-0.3rem] border-b border-dotted border-secondary-muted/50" />
+                <p className="text-gradient-warm font-display text-xl font-bold whitespace-nowrap sm:text-3xl">
+                  {price}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+      <section className="mx-auto max-w-3xl px-5 py-20 text-center sm:px-8">
+        <h2 className="font-display text-3xl font-bold sm:text-4xl">Envie de nouveauté ?</h2>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Nous installons aussi des systèmes neufs adaptés à vos besoins de confort, de performance
+          et d’économies d’énergie.
+        </p>
+        <Button asChild variant="link" className="mt-4 text-base">
+          <Link to="/installation-de-climatisation-a-nimes">
+            Nos solutions sur mesure <ArrowRight />
+          </Link>
+        </Button>
+      </section>
+      <ContactBand variant="gradient" title="Planifier votre entretien" />
     </>
   );
 }

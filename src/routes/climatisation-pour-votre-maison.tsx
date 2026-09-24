@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BedDouble, BriefcaseBusiness, House, Store } from "lucide-react";
-import { ContactBand, PageHero, SectionHeading } from "@/components/site-layout";
+import { ContactBand, PageHero } from "@/components/site-layout";
 import heroImage from "@/assets/regisclim-hero.jpg";
 
 export const Route = createFileRoute("/climatisation-pour-votre-maison")({
@@ -47,50 +47,58 @@ const uses = [
     text: "Une température maîtrisée améliore le confort de vos clients et de vos salariés, quelle que soit la saison.",
   },
 ];
+const tileStyles = [
+  "bg-gradient-cool text-primary-foreground",
+  "bg-accent/10 text-foreground",
+  "bg-muted text-foreground",
+  "bg-secondary text-secondary-foreground",
+];
+const tileText = [
+  "text-primary-foreground/85",
+  "text-muted-foreground",
+  "text-muted-foreground",
+  "text-secondary-muted",
+];
+const tileIcon = ["text-primary-foreground", "text-accent", "text-primary", "text-accent"];
+
 function UsagePage() {
   return (
     <>
-      <PageHero eyebrow="Votre besoin" title="Quelle climatisation pour quel usage ?">
+      <PageHero
+        variant="image"
+        image={heroImage}
+        imageAlt="Pièce de vie climatisée"
+        eyebrow="Votre besoin"
+        title="Quelle climatisation pour quel usage ?"
+      >
         Monosplit, multisplit ou gainable : étudions ensemble la solution qui correspond à votre
         habitation ou à vos locaux.
       </PageHero>
-      <section className="content-shell">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-          <div className="relative">
-            <div className="bg-gradient-warm absolute -inset-3 rotate-2 rounded-[2rem] opacity-15" />
-            <img
-              src={heroImage}
-              loading="lazy"
-              width={1600}
-              height={1000}
-              alt="Pièce de vie climatisée"
-              className="relative aspect-[4/3] size-full rounded-[1.75rem] object-cover shadow-[var(--shadow-lift)]"
-            />
-          </div>
-          <div>
-            <SectionHeading
-              eyebrow="Confort sur mesure"
-              title="De la chambre au local professionnel."
-            />
-            <p className="mt-6 leading-8 text-muted-foreground">
-              L’équipement est choisi selon le volume, le nombre de pièces, l’usage du lieu et vos
-              attentes en matière de discrétion et de consommation.
-            </p>
-          </div>
-        </div>
-        <div className="mt-20 grid gap-5 md:grid-cols-2">
-          {uses.map(({ icon: Icon, title, text }, i) => (
-            <article key={title} className="surface-card surface-card-hover p-8 sm:p-10">
-              <div className={i % 2 ? "icon-badge" : "icon-badge icon-badge-warm"}>
-                <Icon className="size-6" />
-              </div>
-              <h2 className="mt-6 font-display text-2xl font-bold">{title}</h2>
-              <p className="mt-3 leading-7 text-muted-foreground">{text}</p>
-            </article>
-          ))}
-        </div>
+      <section className="mx-auto max-w-5xl px-5 py-20 text-center sm:px-8 sm:py-28">
+        <p className="eyebrow text-primary">Confort sur mesure</p>
+        <h2 className="mt-5 font-display text-4xl leading-tight font-bold sm:text-6xl">
+          De la chambre au <span className="text-gradient-cool">local professionnel.</span>
+        </h2>
+        <p className="mx-auto mt-8 max-w-3xl text-xl leading-9 text-muted-foreground">
+          L’équipement est choisi selon le volume, le nombre de pièces, l’usage du lieu et vos
+          attentes en matière de discrétion et de consommation.
+        </p>
       </section>
-      <ContactBand title="Étudions votre espace" />
+      <section className="mx-auto grid max-w-7xl gap-3 px-3 pb-16 sm:px-5 sm:pb-24 md:grid-cols-5">
+        {uses.map(({ icon: Icon, title, text }, i) => (
+          <article
+            key={title}
+            className={`${tileStyles[i]} ${i === 0 || i === 3 ? "md:col-span-3" : "md:col-span-2"} relative flex min-h-72 flex-col justify-between overflow-hidden rounded-lg p-8 sm:p-10`}
+          >
+            <Icon className={`${tileIcon[i]} size-10`} />
+            <div className="mt-10">
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">{title}</h2>
+              <p className={`${tileText[i]} mt-3 max-w-lg leading-7`}>{text}</p>
+            </div>
+          </article>
+        ))}
+      </section>
+      <ContactBand variant="light" title="Étudions votre espace" />
     </>
   );
 }
