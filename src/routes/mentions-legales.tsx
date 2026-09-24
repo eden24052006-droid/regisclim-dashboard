@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Scale } from "lucide-react";
 import { PageHero } from "@/components/site-layout";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/mentions-legales")({
   head: () => ({
@@ -28,21 +31,47 @@ const sections = [
   "Liens et confidentialité",
 ];
 
+const id = (label: string) => `section-${sections.indexOf(label) + 1}`;
+
+function useActiveSection() {
+  const [active, setActive] = useState(id("Identité"));
+  useEffect(() => {
+    const headings = sections
+      .map((label) => document.getElementById(id(label)))
+      .filter((el): el is HTMLElement => el !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-160px 0px -60% 0px" },
+    );
+    headings.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+  return active;
+}
+
 function LegalPage() {
-  const id = (label: string) => `section-${sections.indexOf(label) + 1}`;
+  const active = useActiveSection();
   return (
     <>
-      <PageHero variant="minimal" eyebrow="Informations" title="Mentions légales">
+      <PageHero icon={<Scale className="size-6" />} eyebrow="Informations" title="Mentions légales">
         Identité, activités et conditions d’utilisation du site RegisClim.
       </PageHero>
-      <div className="mx-auto grid max-w-5xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[13rem_1fr] md:gap-16">
+      <div className="mx-auto grid max-w-5xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[14rem_1fr] md:gap-16">
         <nav aria-label="Sommaire" className="self-start md:sticky md:top-40">
-          <ol className="space-y-2 border-l border-border text-sm">
+          <ol className="glass space-y-1 rounded-2xl p-3 text-sm">
             {sections.map((label) => (
               <li key={label}>
                 <a
                   href={`#${id(label)}`}
-                  className="-ml-px block border-l-2 border-transparent pl-4 text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+                  className={cn(
+                    "block rounded-xl px-3 py-2 transition-all duration-300",
+                    active === id(label)
+                      ? "bg-white/10 text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
                 >
                   {label}
                 </a>
@@ -50,7 +79,7 @@ function LegalPage() {
             ))}
           </ol>
         </nav>
-        <article className="prose-copy max-w-none [&>h2]:scroll-mt-40 [&>h2:first-child]:mt-0">
+        <article className="prose-copy glass max-w-none rounded-[2rem] p-8 sm:p-12 [&>h2]:scroll-mt-40 [&>h2:first-child]:mt-0">
           <h2 id={id("Identité")}>Identité</h2>
           <p>
             Nom du site web : Régis.CLIM

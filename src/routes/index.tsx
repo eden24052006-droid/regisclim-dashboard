@@ -9,10 +9,12 @@ import {
   Leaf,
   Phone,
   ShieldCheck,
+  Snowflake,
   Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactBand } from "@/components/site-layout";
+import { Marquee, Reveal, SplitWords } from "@/components/motion";
 import heroImage from "@/assets/regisclim-hero.jpg";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 
@@ -80,147 +82,209 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const marqueeItems = [
+  "Installation",
+  "Entretien",
+  "Gainable",
+  "Chauffe-eau thermodynamique",
+  "Pompe à chaleur",
+  "RGE QualiPAC · Artisan CMA",
+];
+
 function Index() {
   return (
     <>
-      <section className="px-3 sm:px-5">
-        <div className="relative mx-auto min-h-[82vh] max-w-7xl overflow-hidden rounded-[2rem] bg-secondary text-secondary-foreground">
-          <img
-            src={heroImage}
-            width={1600}
-            height={1000}
-            alt="Salon lumineux équipé d’une climatisation à Nîmes"
-            className="absolute inset-0 size-full scale-105 object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/80 to-secondary/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-secondary/70 via-transparent to-transparent" />
-          <div className="glow-blob -bottom-32 -left-20 size-96 bg-primary/40" />
-          <div className="relative flex min-h-[82vh] flex-col justify-between gap-12 px-6 py-12 sm:px-12 sm:py-16">
-            <div className="animate-rise my-auto max-w-3xl">
-              <p className="eyebrow-pill border border-white/15 bg-white/10 text-secondary-foreground backdrop-blur">
-                <span className="size-1.5 rounded-full bg-accent" />
-                Artisan climaticien à Nîmes
-              </p>
-              <h1 className="mt-6 font-display text-5xl leading-[1.02] font-bold sm:text-7xl">
-                Votre confort,
-                <br />
-                <span className="text-gradient-warm">été comme hiver.</span>
-              </h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-secondary-foreground/80">
-                Installation et entretien de climatisation pour particuliers et professionnels à
-                Nîmes et ses environs.
-              </p>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <Button asChild size="hero" variant="warm">
-                  <a href="tel:0767875716">
-                    <Phone /> 07 67 87 57 16
-                  </a>
-                </Button>
-                <Button asChild size="hero" variant="heroOutline">
-                  <a href="#solutions">
-                    Découvrir nos solutions <ArrowRight />
-                  </a>
-                </Button>
-              </div>
-            </div>
-            <div className="animate-rise flex flex-wrap gap-3 [animation-delay:200ms]">
-              <span className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-md">
-                <BadgeCheck className="size-4 text-accent" /> RGE QualiPAC · Artisan CMA
-              </span>
-              <span className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-md">
-                <Clock3 className="size-4 text-accent" /> Lun–Ven · 8h–17h
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="solutions" className="mt-12 grid scroll-mt-32 md:grid-cols-2">
-        <article className="bg-gradient-cool group relative overflow-hidden px-6 py-16 text-primary-foreground sm:px-12 sm:py-20 lg:pl-[max(3rem,calc((100vw-80rem)/2+2rem))]">
-          <Home className="absolute -right-8 -bottom-10 size-64 opacity-10 transition-transform duration-700 group-hover:scale-110" />
-          <p className="eyebrow relative text-primary-foreground/75">Habitat</p>
-          <h2 className="relative mt-3 font-display text-4xl font-bold sm:text-5xl">
-            Climatisation
-          </h2>
-          <p className="relative mt-5 max-w-md text-lg leading-8 text-primary-foreground/90">
-            Profitez de l’avis d’un professionnel pour une climatisation adaptée à votre espace de
-            vie sur Nîmes et ses environs.
+      <section className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pt-12 pb-16 sm:px-8 sm:pt-16 lg:min-h-[calc(100vh-7rem)] lg:grid-cols-[1.1fr_1fr]">
+        <div>
+          <p className="eyebrow-pill animate-rise text-foreground/90">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
+              <span className="relative inline-flex size-2 rounded-full bg-accent" />
+            </span>
+            Artisan climaticien à Nîmes
           </p>
-        </article>
-        <article className="group relative overflow-hidden bg-secondary px-6 py-16 text-secondary-foreground sm:px-12 sm:py-20">
-          <Building2 className="absolute -right-8 -bottom-10 size-64 text-accent opacity-15 transition-transform duration-700 group-hover:scale-110" />
-          <p className="eyebrow relative text-accent">Entreprise</p>
-          <h2 className="relative mt-3 font-display text-4xl font-bold sm:text-5xl">
-            Climatisation
-          </h2>
-          <p className="relative mt-5 max-w-md text-lg leading-8 text-secondary-muted">
-            Des conditions de travail adaptées grâce à une solution d’air conditionné conçue pour
-            vos locaux professionnels.
+          <h1 className="mt-7 font-display text-5xl leading-[1.02] font-bold sm:text-7xl xl:text-8xl">
+            <SplitWords text="Votre confort," delay={100} />
+            <br />
+            <SplitWords text="été comme hiver." delay={300} className="text-shimmer pb-2" />
+          </h1>
+          <p className="animate-rise mt-7 max-w-xl text-lg leading-8 text-muted-foreground [animation-delay:600ms]">
+            Installation et entretien de climatisation pour particuliers et professionnels à Nîmes
+            et ses environs.
           </p>
-        </article>
-      </section>
-
-      <section className="content-shell">
-        <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-16">
-          <div>
-            <p className="eyebrow text-accent">Nos engagements</p>
-            <h2 className="mt-4 font-display text-4xl leading-tight font-bold sm:text-5xl">
-              Du conseil juste, du matériel fiable.
-            </h2>
-          </div>
-          <ol className="divide-y divide-border border-y border-border">
-            {commitments.map(({ icon: Icon, title, text }, i) => (
-              <li
-                key={title}
-                className="group grid grid-cols-[auto_1fr] items-start gap-6 py-8 sm:grid-cols-[5rem_12rem_1fr] sm:items-center"
-              >
-                <span className="text-gradient-warm font-display text-5xl font-bold">0{i + 1}</span>
-                <h3 className="flex items-center gap-3 font-display text-xl font-bold">
-                  <Icon className="size-5 text-primary" />
-                  {title}
-                </h3>
-                <p className="col-span-2 leading-7 text-muted-foreground sm:col-span-1">{text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="bg-muted">
-        <div className="mx-auto grid max-w-7xl items-stretch lg:grid-cols-2">
-          <img
-            src={technicianImage}
-            loading="lazy"
-            width={1200}
-            height={900}
-            alt="Technicien entretenant une climatisation"
-            className="aspect-[4/3] size-full object-cover lg:aspect-auto"
-          />
-          <div className="px-5 py-16 sm:px-12 lg:py-20">
-            <p className="eyebrow text-primary">Savoir-faire complet</p>
-            <h2 className="mt-4 font-display text-3xl leading-tight font-bold sm:text-4xl">
-              Installation, entretien et solutions thermiques.
-            </h2>
-            <dl className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2">
-              {expertise.map(({ icon: Icon, title, text }) => (
-                <div key={title} className="border-t-2 border-accent pt-4">
-                  <dt className="flex items-center gap-2 font-display text-base font-bold">
-                    <Icon className="size-4 text-accent" />
-                    {title}
-                  </dt>
-                  <dd className="mt-2 text-sm leading-6 text-muted-foreground">{text}</dd>
-                </div>
-              ))}
-            </dl>
-            <Button asChild variant="hero" size="hero" className="mt-10">
-              <a href="/installation-de-climatisation-a-nimes">
-                Voir les installations <ArrowRight />
+          <div className="animate-rise mt-9 flex flex-wrap gap-3 [animation-delay:750ms]">
+            <Button asChild size="hero" variant="warm" className="btn-shine">
+              <a href="tel:0767875716">
+                <Phone /> 07 67 87 57 16
+              </a>
+            </Button>
+            <Button asChild size="hero" variant="heroOutline">
+              <a href="#solutions">
+                Découvrir nos solutions <ArrowRight />
               </a>
             </Button>
           </div>
         </div>
+        <div className="animate-rise relative [animation-delay:400ms]">
+          <div className="absolute -inset-3 rounded-[3rem] sm:-inset-6 bg-[conic-gradient(from_180deg,var(--color-primary),var(--color-accent),var(--color-primary))] opacity-25 blur-3xl" />
+          <div className="float-slow glow-border relative overflow-hidden rounded-[3rem_1rem_3rem_1rem]">
+            <img
+              src={heroImage}
+              width={1600}
+              height={1000}
+              alt="Salon lumineux équipé d’une climatisation à Nîmes"
+              className="aspect-[4/5] w-full object-cover sm:aspect-[5/5]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+          </div>
+          <div className="float-slower glass absolute -bottom-6 -left-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-left-10">
+            <span className="icon-badge size-10! rounded-xl!">
+              <BadgeCheck className="size-5" />
+            </span>
+            RGE QualiPAC · Artisan CMA
+          </div>
+          <div className="float-slow glass absolute -top-5 -right-2 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-right-6">
+            <span className="icon-badge icon-badge-warm size-10! rounded-xl!">
+              <Clock3 className="size-5" />
+            </span>
+            Lun–Ven · 8h–17h
+          </div>
+          <Snowflake className="absolute top-1/2 -right-4 hidden size-10 animate-[spin_14s_linear_infinite] text-primary/60 sm:block" />
+        </div>
       </section>
-      <div className="h-16 sm:h-24" />
+
+      <Marquee
+        items={marqueeItems}
+        className="border-y border-white/10 bg-white/[0.02] py-5 font-display text-xl font-semibold text-foreground/70 sm:text-2xl"
+      />
+
+      <section
+        id="solutions"
+        className="mx-auto max-w-7xl scroll-mt-40 px-5 py-20 sm:px-8 sm:py-28"
+      >
+        <div className="flex flex-col gap-4 lg:h-[26rem] lg:flex-row">
+          {[
+            {
+              icon: Home,
+              eyebrow: "Habitat",
+              text: "Profitez de l’avis d’un professionnel pour une climatisation adaptée à votre espace de vie sur Nîmes et ses environs.",
+              tone: "cool",
+            },
+            {
+              icon: Building2,
+              eyebrow: "Entreprise",
+              text: "Des conditions de travail adaptées grâce à une solution d’air conditionné conçue pour vos locaux professionnels.",
+              tone: "warm",
+            },
+          ].map(({ icon: Icon, eyebrow, text, tone }, i) => (
+            <Reveal
+              key={eyebrow}
+              delay={i * 150}
+              className="group flex-1 transition-[flex-grow] duration-700 ease-out lg:hover:grow-[1.7]"
+            >
+              <article className="spotlight relative flex h-full flex-col justify-end overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 sm:p-10">
+                <div
+                  className={`glow-blob -top-20 -right-20 size-72 transition-transform duration-700 group-hover:scale-150 ${tone === "cool" ? "bg-primary/30" : "bg-accent/25"}`}
+                />
+                <Icon
+                  className={`absolute top-8 right-8 size-24 opacity-20 transition-all duration-700 group-hover:rotate-6 group-hover:opacity-40 ${tone === "cool" ? "text-primary" : "text-accent"}`}
+                />
+                <div
+                  className={
+                    tone === "cool" ? "icon-badge relative" : "icon-badge icon-badge-warm relative"
+                  }
+                >
+                  <Icon className="size-6" />
+                </div>
+                <p
+                  className={`eyebrow relative mt-8 ${tone === "cool" ? "text-primary" : "text-accent"}`}
+                >
+                  {eyebrow}
+                </p>
+                <h2 className="relative mt-2 font-display text-3xl font-bold sm:text-4xl">
+                  Climatisation
+                </h2>
+                <p className="relative mt-4 max-w-md leading-7 text-muted-foreground">{text}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-12 px-5 pb-20 sm:px-8 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+        <div className="lg:sticky lg:top-44 lg:self-start">
+          <Reveal>
+            <p className="eyebrow text-accent">Nos engagements</p>
+            <h2 className="mt-4 font-display text-4xl leading-tight font-bold sm:text-6xl">
+              Du conseil juste, du matériel <span className="text-gradient-cool">fiable.</span>
+            </h2>
+          </Reveal>
+        </div>
+        <div className="space-y-6">
+          {commitments.map(({ icon: Icon, title, text }, i) => (
+            <div key={title} className="lg:sticky" style={{ top: `calc(11rem + ${i * 1.75}rem)` }}>
+              <Reveal>
+                <article className="spotlight glass flex min-h-56 flex-col justify-between rounded-[1.75rem] bg-background/80 p-8 sm:p-10">
+                  <div className="flex items-center justify-between">
+                    <div className="icon-badge">
+                      <Icon className="size-6" />
+                    </div>
+                    <span className="font-display text-6xl font-bold text-white/10">0{i + 1}</span>
+                  </div>
+                  <div className="mt-8">
+                    <h3 className="font-display text-2xl font-bold">{title}</h3>
+                    <p className="mt-2 leading-7 text-muted-foreground">{text}</p>
+                  </div>
+                </article>
+              </Reveal>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+        <div className="grid auto-rows-[minmax(11rem,auto)] gap-4 md:grid-cols-4">
+          <Reveal className="md:col-span-2 md:row-span-2">
+            <div className="group relative h-full min-h-80 overflow-hidden rounded-[2rem]">
+              <img
+                src={technicianImage}
+                loading="lazy"
+                width={1200}
+                height={900}
+                alt="Technicien entretenant une climatisation"
+                className="absolute inset-0 size-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/75 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-8">
+                <p className="eyebrow text-primary">Savoir-faire complet</p>
+                <h2 className="mt-3 font-display text-3xl leading-tight font-bold sm:text-4xl">
+                  Installation, entretien et solutions thermiques.
+                </h2>
+              </div>
+            </div>
+          </Reveal>
+          {expertise.map(({ icon: Icon, title, text }, i) => (
+            <Reveal key={title} delay={i * 100}>
+              <div className="spotlight group h-full rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-white/20">
+                <Icon className="size-7 text-accent transition-transform duration-500 group-hover:scale-125 group-hover:-rotate-12" />
+                <h3 className="mt-5 font-display text-lg font-bold">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p>
+              </div>
+            </Reveal>
+          ))}
+          <Reveal className="md:col-span-4">
+            <a
+              href="/installation-de-climatisation-a-nimes"
+              className="bg-gradient-cool group flex items-center justify-between rounded-[1.5rem] px-8 py-6 font-display text-xl font-semibold text-primary-foreground transition-shadow hover:shadow-[0_20px_60px_-15px_var(--color-primary)]"
+            >
+              Voir les installations
+              <span className="grid size-12 place-items-center rounded-full bg-white/15 transition-transform duration-500 group-hover:translate-x-2 group-hover:-rotate-45">
+                <ArrowRight />
+              </span>
+            </a>
+          </Reveal>
+        </div>
+      </section>
       <ContactBand />
     </>
   );
