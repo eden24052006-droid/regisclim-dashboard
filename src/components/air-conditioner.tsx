@@ -1,164 +1,144 @@
 import { useEffect, useRef } from "react";
 
-type Gust = {
+// Page blocks that get pushed around by the air flow.
+const WIND_TARGETS =
+  "main :is(article, aside, img, h1, h2, [role='tab'], ol > li, .glass, .eyebrow-pill, [data-wind])";
+
+type Block = {
+  el: HTMLElement;
   x: number;
   y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-  length: number;
-  phase: number;
-  flake: boolean;
+  seed: number;
 };
 
-const VENT_WIDTH = 0.72; // share of the unit width that blows air
+function collectBlocks(): Block[] {
+  const found = Array.from(document.querySelectorAll<HTMLElement>(WIND_TARGETS)).filter(
+    (el) => !el.closest("[aria-hidden='true']") && getComputedStyle(el).animationName === "none",
+  );
+  const set = new Set(found);
+  return found
+    .filter((el) => {
+      // Only move the outermost block so nested ones don't stack their motion.
+      for (let p = el.parentElement; p; p = p.parentElement) if (set.has(p)) return false;
+      return true;
+    })
+    .map((el) => {
+      const rect = el.getBoundingClientRect();
+      return {
+        el,
+        x: rect.left + rect.width / 2,
+        y: rect.top + window.scrollY + rect.height / 2,
+        seed: Math.random() * Math.PI * 2,
+      };
+    });
+}
+
+function resetBlock({ el }: Block) {
+  el.style.transform = "";
+  el.style.transformOrigin = "";
+  el.style.transition = "";
+  el.style.willChange = "";
+}
 
 /**
  * Wall-mounted AC unit pinned under the header. Scrolling down opens the
- * flap and blows air downwards, so it looks like the wind moves the page.
+ * flap and its airflow lifts and ripples the page blocks, as if the wind
+ * were pushing the site down.
  */
 export function AirConditioner() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const flapRef = useRef<SVGGElement>(null);
   const ledRef = useRef<SVGCircleElement>(null);
   const unitRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
     const unit = unitRef.current;
-    if (!canvas || !ctx || !unit) return;
+    if (!unit) return;
 
-    const gusts: Gust[] = [];
+    let blocks: Block[] = [];
     let intensity = 0;
     let lastY = window.scrollY;
     let frame = 0;
     let running = false;
 
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = canvas.clientWidth * dpr;
-      canvas.height = canvas.clientHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const prepare = () => {
+      blocks = collectBlocks();
+      for (const { el } of blocks) {
+        el.style.transformOrigin = "50% 100%";
+        el.style.transition = "none";
+        el.style.willChange = "transform";
+      }
     };
 
-    const spawn = (w: number) => {
-      const ventWidth = unit.offsetWidth * VENT_WIDTH;
-      const offset = (Math.random() - 0.5) * ventWidth;
-      gusts.push({
-        x: w / 2 + offset,
-        y: 2,
-        vx: (offset / ventWidth) * 2.2 + (Math.random() - 0.5) * 0.6,
-        vy: 3 + Math.random() * 3 + intensity * 7,
-        life: 0,
-        maxLife: 38 + Math.random() * 42,
-        length: 8 + Math.random() * 16,
-        phase: Math.random() * Math.PI * 2,
-        flake: Math.random() < 0.12,
-      });
-    };
+    const render = (now: number) => {
+      // The page changed under us (client-side navigation): pick up its blocks.
+      if (blocks.length > 0 && !blocks[0]!.el.isConnected) prepare();
 
-    const render = () => {
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      ctx.clearRect(0, 0, w, h);
+      const unitRect = unit.getBoundingClientRect();
+      const sourceX = unitRect.left + unitRect.width / 2;
+      const sourceY = unitRect.bottom;
+      const viewport = window.innerHeight;
 
-      // Soft cone of cold air under the vent.
-      if (intensity > 0.02) {
-        const ventWidth = unit.offsetWidth * VENT_WIDTH;
-        const cone = ctx.createLinearGradient(0, 0, 0, h * 0.8);
-        cone.addColorStop(0, `rgba(140, 210, 255, ${0.22 * intensity})`);
-        cone.addColorStop(1, "rgba(140, 210, 255, 0)");
-        ctx.fillStyle = cone;
-        ctx.beginPath();
-        ctx.moveTo(w / 2 - ventWidth / 2, 0);
-        ctx.lineTo(w / 2 + ventWidth / 2, 0);
-        ctx.lineTo(w, h * 0.8);
-        ctx.lineTo(0, h * 0.8);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      const births = intensity * 5;
-      for (let i = 0; i < births; i++) {
-        if (Math.random() < births - i) spawn(w);
-      }
-
-      ctx.lineCap = "round";
-      for (let i = gusts.length - 1; i >= 0; i--) {
-        const g = gusts[i]!;
-        g.life += 1;
-        g.phase += 0.15;
-        g.x += g.vx + Math.sin(g.phase) * 0.6;
-        g.y += g.vy;
-        g.vy *= 0.985;
-        if (g.life >= g.maxLife || g.y > h) {
-          gusts.splice(i, 1);
+      for (const block of blocks) {
+        const y = block.y - window.scrollY;
+        if (y < -300 || y > viewport + 300) {
+          if (block.el.style.transform) block.el.style.transform = "";
           continue;
         }
-        const fade = 1 - g.life / g.maxLife;
-        if (g.flake) {
-          ctx.fillStyle = `rgba(230, 245, 255, ${0.85 * fade})`;
-          ctx.beginPath();
-          ctx.arc(g.x, g.y, 1.8, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          const tailX = g.x - g.vx * (g.length / 4);
-          const tailY = g.y - g.length;
-          const stroke = ctx.createLinearGradient(g.x, g.y, tailX, tailY);
-          stroke.addColorStop(0, `rgba(190, 230, 255, ${0.75 * fade})`);
-          stroke.addColorStop(1, "rgba(190, 230, 255, 0)");
-          ctx.strokeStyle = stroke;
-          ctx.lineWidth = 1.6;
-          ctx.beginPath();
-          ctx.moveTo(tailX, tailY);
-          ctx.quadraticCurveTo(g.x + Math.sin(g.phase) * 4, (g.y + tailY) / 2, g.x, g.y);
-          ctx.stroke();
-        }
+        const distance = Math.hypot(sourceX - block.x, sourceY - y);
+        const strength = intensity / (1 + distance / 900);
+        // A wave that travels outwards from the AC unit.
+        const wave = Math.sin(now * 0.009 - distance * 0.011 + block.seed);
+        const lift = strength * (0.65 + 0.35 * wave);
+        block.el.style.transform =
+          `perspective(900px) translate3d(${(-strength * (3 + wave * 5)).toFixed(2)}px, ${(-lift * 16).toFixed(2)}px, 0) ` +
+          `rotateX(${(strength * wave * 8).toFixed(2)}deg) rotateZ(${(-strength * wave * 1.2).toFixed(2)}deg) ` +
+          `skewX(${(strength * wave * 2.5).toFixed(2)}deg)`;
       }
 
-      if (flapRef.current)
+      if (flapRef.current) {
         flapRef.current.style.transform = `translateY(${intensity * 15}px) scaleY(${1 - intensity * 0.3})`;
+      }
       if (ledRef.current) ledRef.current.style.opacity = String(0.25 + intensity * 0.75);
-      unit.style.transform = `translateY(${Math.sin(performance.now() / 40) * intensity * 0.8}px)`;
+      unit.style.transform = `translateY(${Math.sin(now / 40) * intensity * 0.8}px)`;
 
-      intensity *= 0.94;
-      if (intensity > 0.004 || gusts.length > 0) {
+      intensity *= 0.95;
+      if (intensity > 0.003) {
         frame = requestAnimationFrame(render);
       } else {
         running = false;
         intensity = 0;
-        ctx.clearRect(0, 0, w, h);
+        blocks.forEach(resetBlock);
+        blocks = [];
+        unit.style.transform = "";
+        if (flapRef.current) flapRef.current.style.transform = "";
+        if (ledRef.current) ledRef.current.style.opacity = "0.25";
       }
     };
 
     const blow = (amount: number) => {
       intensity = Math.min(1, intensity + amount);
-      if (!running) {
-        running = true;
-        frame = requestAnimationFrame(render);
-      }
+      if (running) return;
+      running = true;
+      prepare();
+      frame = requestAnimationFrame(render);
     };
 
     const onScroll = () => {
       const y = window.scrollY;
       const delta = y - lastY;
       lastY = y;
-      if (delta > 0) blow(delta / 220);
+      if (delta > 0) blow(delta / 320);
     };
 
-    resize();
-    window.addEventListener("resize", resize);
     window.addEventListener("scroll", onScroll, { passive: true });
-    const teaser = window.setTimeout(() => blow(0.55), 1400);
+    const teaser = window.setTimeout(() => blow(0.6), 1400);
 
     return () => {
       window.clearTimeout(teaser);
-      window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
+      blocks.forEach(resetBlock);
     };
   }, []);
 
@@ -216,10 +196,6 @@ export function AirConditioner() {
           </g>
         </svg>
       </div>
-      <canvas
-        ref={canvasRef}
-        className="absolute top-[calc(100%-0.35rem)] left-1/2 h-[min(65vh,560px)] w-[260%] -translate-x-1/2"
-      />
     </div>
   );
 }
