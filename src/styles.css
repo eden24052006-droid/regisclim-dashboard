@@ -384,6 +384,13 @@
   .float-slower {
     animation: float 9s ease-in-out infinite reverse;
   }
+  .wind-line {
+    stroke-dasharray: 120 180;
+    animation: wind-flow 2.6s linear infinite;
+  }
+  .wind-paused .wind-line {
+    animation-play-state: paused;
+  }
   .marquee-track {
     animation: marquee 32s linear infinite;
   }
@@ -453,6 +460,15 @@
   }
   50% {
     transform: translateY(-14px);
+  }
+}
+
+@keyframes wind-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -300;
   }
 }
 
