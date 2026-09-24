@@ -13,7 +13,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader } from "@/components/site-layout";
 import { Aurora, PointerSpotlight } from "@/components/motion";
-import { AirConditioner } from "@/components/air-conditioner";
 
 function NotFoundComponent() {
   return (
@@ -128,7 +127,6 @@ function RootComponent() {
         <Aurora />
         <PointerSpotlight />
         <SiteHeader />
-        <AirConditioner />
         <main>
           <Outlet />
         </main>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Reveal, SplitWords } from "@/components/motion";
+import { AirConditioner } from "@/components/air-conditioner";
 
 const navItems = [
   { to: "/" as const, label: "Accueil" },
@@ -59,7 +60,7 @@ export function SiteHeader() {
   return (
     <>
       <div aria-hidden style={{ height: headerHeight }} />
-      <header className="fixed inset-x-0 top-0 z-50 max-h-screen overflow-y-auto">
+      <header className="fixed inset-x-0 top-0 z-50">
         <div ref={barsRef}>
           <div className="border-b border-white/5 bg-secondary/80 text-secondary-foreground backdrop-blur-xl">
             <div className="mx-auto flex min-h-9 max-w-7xl items-center justify-between gap-4 px-5 text-xs font-semibold sm:px-8">
@@ -89,7 +90,10 @@ export function SiteHeader() {
             >
               <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-5">
                 <Brand />
-                <NavLinks className="hidden lg:flex" />
+                <div className="flex items-center gap-4">
+                  <NavLinks className="hidden lg:flex" />
+                  <AirConditioner />
+                </div>
                 <Button asChild variant="warm" className="btn-shine shrink-0">
                   <a href="tel:0767875716" aria-label="Appeler Régis au 07 67 87 57 16">
                     <Phone /> <span className="hidden sm:inline">Appeler Régis</span>
