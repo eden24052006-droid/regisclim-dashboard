@@ -1,7 +1,18 @@
 import { Link } from "@tanstack/react-router";
-import { Clock3, Facebook, Flame, Menu, Phone, Snowflake, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  Clock3,
+  Facebook,
+  Flame,
+  MapPin,
+  Menu,
+  Phone,
+  Snowflake,
+  X,
+} from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { to: "/" as const, label: "Accueil" },
@@ -11,14 +22,19 @@ const navItems = [
   { to: "/aides-et-subventions" as const, label: "Aides" },
 ];
 
-export function Brand() {
+export function Brand({ tone = "dark" }: { tone?: "dark" | "light" }) {
   return (
     <Link to="/" className="group flex items-center gap-3" aria-label="RegisClim, accueil">
-      <span className="relative grid size-11 place-items-center rounded-sm bg-primary text-primary-foreground">
-        <Snowflake className="size-6 transition-transform duration-500 group-hover:rotate-90" />
-        <Flame className="absolute -bottom-1 -right-1 size-5 rounded-full bg-accent p-1 text-accent-foreground" />
+      <span className="bg-gradient-cool relative grid size-10 place-items-center rounded-xl text-primary-foreground shadow-md shadow-primary/30">
+        <Snowflake className="size-5 transition-transform duration-500 group-hover:rotate-90" />
+        <Flame className="bg-gradient-warm absolute -bottom-1.5 -right-1.5 size-5 rounded-full p-1 text-accent-foreground ring-2 ring-background" />
       </span>
-      <span className="font-display text-2xl font-extrabold text-foreground">
+      <span
+        className={cn(
+          "font-display text-xl font-bold tracking-tight",
+          tone === "light" ? "text-secondary-foreground" : "text-foreground",
+        )}
+      >
         Régis<span className="text-primary">.</span>
         <span className="text-accent">CLIM</span>
       </span>
@@ -28,90 +44,116 @@ export function Brand() {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const barsRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(117);
+  const [headerHeight, setHeaderHeight] = useState(112);
 
   useEffect(() => {
     const bars = barsRef.current;
     if (!bars) return;
-    const observer = new ResizeObserver(() => setHeaderHeight(bars.offsetHeight + 1));
+    const observer = new ResizeObserver(() => setHeaderHeight(bars.offsetHeight));
     observer.observe(bars);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <>
       <div aria-hidden style={{ height: headerHeight }} />
-      <header className="fixed inset-x-0 top-0 z-50 max-h-screen overflow-y-auto border-b border-border/80 bg-background/95 backdrop-blur">
+      <header className="fixed inset-x-0 top-0 z-50 max-h-screen overflow-y-auto">
         <div ref={barsRef}>
-          <div className="border-b border-border bg-secondary text-secondary-foreground">
+          <div className="bg-secondary text-secondary-foreground">
             <div className="mx-auto flex min-h-9 max-w-7xl items-center justify-between gap-4 px-5 text-xs font-semibold sm:px-8">
-              <span className="hidden items-center gap-2 sm:flex">
+              <span className="hidden items-center gap-2 text-secondary-muted sm:flex">
                 <Clock3 className="size-3.5 text-accent" /> Lun–Ven · 8h–17h
               </span>
-              <span>Climaticien à Nîmes et ses environs</span>
+              <span className="flex items-center gap-2">
+                <MapPin className="hidden size-3.5 text-primary sm:block" />
+                Climaticien à Nîmes et ses environs
+              </span>
               <a
                 href="tel:0767875716"
-                className="flex items-center gap-2 transition-colors hover:text-accent"
+                className="flex shrink-0 items-center gap-2 transition-colors hover:text-accent"
               >
                 <Phone className="size-3.5" /> 07 67 87 57 16
               </a>
             </div>
           </div>
-          <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
-            <Brand />
-            <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
+          <div className="px-3 pt-3 sm:px-5">
+            <div
+              className={cn(
+                "mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl border px-4 backdrop-blur-xl transition-all duration-300 sm:px-5",
+                scrolled || open
+                  ? "border-border/80 bg-background/85 shadow-[var(--shadow-soft)]"
+                  : "border-transparent bg-background/60",
+              )}
+            >
+              <Brand />
+              <nav
+                className="hidden items-center gap-1 rounded-full border border-border/70 bg-muted/60 p-1 lg:flex"
+                aria-label="Navigation principale"
+              >
+                {navItems.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    activeOptions={{ exact: item.to === "/" }}
+                    className="rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground transition-all hover:text-foreground"
+                    activeProps={{ className: "bg-background text-primary! shadow-sm" }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+              <Button asChild variant="warm" className="hidden md:inline-flex">
+                <a href="tel:0767875716">
+                  <Phone /> Appeler Régis
+                </a>
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="rounded-xl hover:bg-muted hover:text-foreground lg:hidden"
+                aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <X /> : <Menu />}
+              </Button>
+            </div>
+          </div>
+        </div>
+        {open && (
+          <div className="px-3 pt-2 pb-3 sm:px-5 lg:hidden">
+            <nav
+              className="animate-rise mx-auto grid max-w-7xl gap-1 rounded-2xl border border-border/80 bg-background/95 p-3 shadow-[var(--shadow-lift)] backdrop-blur-xl"
+              aria-label="Navigation mobile"
+            >
               {navItems.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
                   activeOptions={{ exact: item.to === "/" }}
-                  className="px-3 py-2 text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
-                  activeProps={{ className: "text-primary" }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-            <Button asChild variant="warm" className="hidden md:inline-flex">
-              <a href="tel:0767875716">
-                <Phone /> Appeler Régis
-              </a>
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="lg:hidden"
-              aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <X /> : <Menu />}
-            </Button>
-          </div>
-        </div>
-        {open && (
-          <nav
-            className="border-t border-border bg-background px-5 py-4 lg:hidden"
-            aria-label="Navigation mobile"
-          >
-            <div className="mx-auto grid max-w-7xl gap-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
                   onClick={() => setOpen(false)}
-                  className="border-b border-border py-3 text-sm font-bold"
+                  className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors hover:bg-muted"
+                  activeProps={{ className: "bg-primary/10 text-primary" }}
                 >
                   {item.label}
+                  <ArrowUpRight className="size-4 opacity-40" />
                 </Link>
               ))}
-              <Button asChild variant="warm" className="mt-3">
+              <Button asChild variant="warm" size="lg" className="mt-2">
                 <a href="tel:0767875716">
                   <Phone /> 07 67 87 57 16
                 </a>
               </Button>
-            </div>
-          </nav>
+            </nav>
+          </div>
         )}
       </header>
     </>
@@ -120,52 +162,58 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="bg-secondary text-secondary-foreground">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.2fr_1fr_1fr]">
+    <footer className="relative mt-8 overflow-hidden rounded-t-[2.5rem] bg-secondary text-secondary-foreground">
+      <div className="glow-blob -top-32 -left-24 size-80 bg-primary/25" />
+      <div className="glow-blob -right-24 -bottom-32 size-80 bg-accent/15" />
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <Brand />
-          <p className="mt-5 max-w-sm text-sm leading-7 text-secondary-muted">
+          <Brand tone="light" />
+          <p className="mt-6 max-w-sm text-sm leading-7 text-secondary-muted">
             Installation et entretien de climatisation, pompes à chaleur et chauffe-eau
             thermodynamiques à Nîmes.
           </p>
         </div>
         <div>
-          <h2 className="text-sm font-extrabold uppercase text-secondary-foreground">
-            Nous contacter
-          </h2>
-          <div className="mt-4 space-y-3 text-sm text-secondary-muted">
+          <h2 className="eyebrow text-secondary-muted">Nous contacter</h2>
+          <div className="mt-5 space-y-3 text-sm text-secondary-muted">
             <p>
               2 Impasse des Caprices
               <br />
               30900 Nîmes
             </p>
-            <a href="tel:0767875716" className="block font-bold text-secondary-foreground">
+            <a
+              href="tel:0767875716"
+              className="block font-display text-lg font-semibold text-secondary-foreground transition-colors hover:text-accent"
+            >
               07 67 87 57 16
             </a>
             <p>Lundi au vendredi · 8h–17h</p>
           </div>
         </div>
         <div>
-          <h2 className="text-sm font-extrabold uppercase text-secondary-foreground">
-            Informations
-          </h2>
-          <div className="mt-4 grid gap-3 text-sm text-secondary-muted">
-            <Link to="/mentions-legales" className="hover:text-secondary-foreground">
+          <h2 className="eyebrow text-secondary-muted">Informations</h2>
+          <div className="mt-5 grid gap-3 text-sm text-secondary-muted">
+            <Link
+              to="/mentions-legales"
+              className="transition-colors hover:text-secondary-foreground"
+            >
               Mentions légales
             </Link>
             <a
               href="https://www.facebook.com/regis.clim30/"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 hover:text-secondary-foreground"
+              className="flex items-center gap-2 transition-colors hover:text-secondary-foreground"
             >
               <Facebook className="size-4" /> Facebook
             </a>
-            <span>RGE QualiPAC · Artisan CMA</span>
+            <span className="w-fit rounded-full border border-secondary-border px-3 py-1 text-xs font-semibold text-secondary-foreground">
+              RGE QualiPAC · Artisan CMA
+            </span>
           </div>
         </div>
       </div>
-      <div className="border-t border-secondary-border py-5 text-center text-xs text-secondary-muted">
+      <div className="relative border-t border-secondary-border py-6 text-center text-xs text-secondary-muted">
         © 2026 RegisClim · Site original réalisé par Charles Pons
       </div>
     </footer>
@@ -182,35 +230,80 @@ export function PageHero({
   children: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden bg-secondary py-16 text-secondary-foreground sm:py-20">
-      <div className="absolute inset-y-0 right-0 w-1/3 bg-primary opacity-20" />
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <p className="eyebrow text-accent">{eyebrow}</p>
-        <h1 className="mt-3 max-w-4xl font-display text-4xl font-extrabold sm:text-5xl">{title}</h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-secondary-muted sm:text-lg">
-          {children}
-        </p>
+    <section className="px-3 sm:px-5">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-secondary text-secondary-foreground">
+        <div className="grid-pattern absolute inset-0 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
+        <div className="glow-blob -top-24 right-0 size-96 bg-primary/40" />
+        <div className="glow-blob -bottom-40 right-1/3 size-80 bg-accent/25" />
+        <div className="animate-rise relative px-6 py-16 sm:px-12 sm:py-24">
+          <p className="eyebrow-pill border border-white/15 bg-white/10 text-secondary-foreground backdrop-blur">
+            <span className="size-1.5 rounded-full bg-accent" />
+            {eyebrow}
+          </p>
+          <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.1] font-bold sm:text-6xl">
+            {title}
+          </h1>
+          <p className="mt-6 max-w-2xl text-base leading-8 text-secondary-muted sm:text-lg">
+            {children}
+          </p>
+        </div>
       </div>
     </section>
   );
 }
 
+export function SectionHeading({
+  eyebrow,
+  title,
+  tone = "primary",
+  align = "left",
+  className,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  tone?: "primary" | "accent";
+  align?: "left" | "center";
+  className?: string;
+}) {
+  return (
+    <div className={cn(align === "center" && "mx-auto text-center", "max-w-2xl", className)}>
+      <p
+        className={cn(
+          "eyebrow-pill",
+          tone === "accent" ? "bg-accent/10 text-accent" : "bg-primary/10 text-primary",
+        )}
+      >
+        <span
+          className={cn("size-1.5 rounded-full", tone === "accent" ? "bg-accent" : "bg-primary")}
+        />
+        {eyebrow}
+      </p>
+      <h2 className="mt-4 font-display text-3xl leading-tight font-bold sm:text-4xl">{title}</h2>
+    </div>
+  );
+}
+
 export function ContactBand({ title = "Parlons de votre projet" }: { title?: string }) {
   return (
-    <section className="bg-primary py-12 text-primary-foreground">
-      <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 sm:px-8 md:flex-row md:items-center">
-        <div>
-          <p className="eyebrow text-primary-foreground/70">Conseil personnalisé</p>
-          <h2 className="mt-2 font-display text-3xl font-extrabold">{title}</h2>
-          <p className="mt-2 text-primary-foreground/80">
-            Un interlocuteur unique pour étudier la solution adaptée à vos besoins.
-          </p>
+    <section className="px-3 pb-16 sm:px-5 sm:pb-24">
+      <div className="bg-gradient-cool relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] text-primary-foreground shadow-[var(--shadow-lift)]">
+        <div className="grid-pattern absolute inset-0 opacity-60" />
+        <div className="glow-blob -top-20 -right-10 size-72 bg-white/25" />
+        <div className="glow-blob -bottom-24 left-1/4 size-72 bg-accent/40" />
+        <div className="relative flex flex-col items-start justify-between gap-8 px-6 py-12 sm:px-12 sm:py-14 md:flex-row md:items-center">
+          <div>
+            <p className="eyebrow text-primary-foreground/75">Conseil personnalisé</p>
+            <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{title}</h2>
+            <p className="mt-3 max-w-xl text-primary-foreground/85">
+              Un interlocuteur unique pour étudier la solution adaptée à vos besoins.
+            </p>
+          </div>
+          <Button asChild size="hero" variant="warm">
+            <a href="tel:0767875716">
+              <Phone /> 07 67 87 57 16
+            </a>
+          </Button>
         </div>
-        <Button asChild size="hero" variant="warm">
-          <a href="tel:0767875716">
-            <Phone /> 07 67 87 57 16
-          </a>
-        </Button>
       </div>
     </section>
   );
