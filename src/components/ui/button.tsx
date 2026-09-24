@@ -5,14 +5,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-        warm: "bg-accent text-accent-foreground shadow hover:bg-accent/90",
-        hero: "bg-primary text-primary-foreground shadow-lg hover:bg-primary/90",
-        heroOutline: "border border-background bg-background text-foreground shadow hover:bg-muted",
+        default:
+          "bg-gradient-cool text-primary-foreground shadow-md shadow-primary/25 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30",
+        warm: "bg-gradient-warm text-accent-foreground shadow-md shadow-accent/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/40",
+        hero: "bg-gradient-cool text-primary-foreground shadow-lg shadow-primary/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/35",
+        heroOutline:
+          "border border-white/30 bg-white/10 text-white backdrop-blur-md hover:bg-white/20",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
@@ -25,7 +27,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
-        hero: "h-12 px-6 text-base",
+        hero: "h-13 px-7 text-base",
       },
     },
     defaultVariants: {
