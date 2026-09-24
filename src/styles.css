@@ -543,16 +543,6 @@ html.splash-active header * {
   }
 }
 
-@keyframes wiggle {
-  0%,
-  100% {
-    transform: rotate(-12deg);
-  }
-  50% {
-    transform: rotate(12deg);
-  }
-}
-
 @keyframes wind-flow {
   from {
     stroke-dashoffset: 0;
