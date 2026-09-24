@@ -170,7 +170,10 @@ export function AirConditioner({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn("pointer-events-none relative w-[4.5rem] shrink-0 print:hidden", className)}
+      className={cn(
+        "pointer-events-none relative w-14 shrink-0 min-[380px]:w-20 sm:w-24 xl:w-32 print:hidden",
+        className,
+      )}
     >
       <div ref={unitRef} className="relative drop-shadow-[0_6px_12px_rgba(0,0,0,0.5)]">
         <svg viewBox="0 0 200 76" className="w-full overflow-visible">
@@ -213,7 +216,7 @@ export function AirConditioner({ className }: { className?: string }) {
       <svg
         ref={windRef}
         viewBox="0 0 240 300"
-        className="wind-paused absolute top-[calc(100%-2px)] left-1/2 h-64 w-52 -translate-x-1/2 overflow-visible opacity-0"
+        className="wind-paused absolute top-[calc(100%-2px)] left-1/2 h-72 w-60 -translate-x-1/2 xl:h-80 xl:w-72 overflow-visible opacity-0"
       >
         <defs>
           <linearGradient

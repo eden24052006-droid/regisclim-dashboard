@@ -16,14 +16,18 @@ const navItems = [
 
 export function Brand({ tone = "dark" }: { tone?: "dark" | "light" }) {
   return (
-    <Link to="/" className="group flex items-center gap-3" aria-label="RegisClim, accueil">
-      <span className="bg-gradient-cool relative grid size-10 place-items-center rounded-xl text-primary-foreground shadow-md shadow-primary/30">
+    <Link
+      to="/"
+      className="group flex shrink-0 items-center gap-2.5 sm:gap-3"
+      aria-label="RegisClim, accueil"
+    >
+      <span className="bg-gradient-cool relative grid size-9 place-items-center sm:size-10 rounded-xl text-primary-foreground shadow-md shadow-primary/30">
         <Snowflake className="size-5 transition-transform duration-500 group-hover:rotate-90" />
         <Flame className="bg-gradient-warm absolute -bottom-1.5 -right-1.5 size-5 rounded-full p-1 text-accent-foreground ring-2 ring-background" />
       </span>
       <span
         className={cn(
-          "font-display text-xl font-bold tracking-tight",
+          "font-display text-lg font-bold tracking-tight sm:text-xl",
           tone === "light" ? "text-secondary-foreground" : "text-foreground",
         )}
       >
@@ -88,15 +92,16 @@ export function SiteHeader() {
                   : "border-white/5 bg-background/40",
               )}
             >
-              <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-5">
+              <div className="flex h-16 items-center justify-between gap-2 px-3 sm:gap-4 sm:px-5">
                 <Brand />
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                   <NavLinks className="hidden lg:flex" />
                   <AirConditioner />
                 </div>
-                <Button asChild variant="warm" className="btn-shine shrink-0">
+                <Button asChild variant="warm" className="btn-shine shrink-0 px-3 sm:px-4">
                   <a href="tel:0767875716" aria-label="Appeler Régis au 07 67 87 57 16">
-                    <Phone /> <span className="hidden sm:inline">Appeler Régis</span>
+                    <Phone />{" "}
+                    <span className="hidden sm:inline lg:hidden xl:inline">Appeler Régis</span>
                   </a>
                 </Button>
               </div>
@@ -139,7 +144,7 @@ function NavLinks({ className }: { className?: string }) {
           key={item.to}
           to={item.to}
           activeOptions={{ exact: item.to === "/" }}
-          className="shrink-0 rounded-full px-3 py-2 text-[13px] font-semibold sm:px-4 sm:text-sm whitespace-nowrap text-muted-foreground transition-all hover:text-foreground"
+          className="shrink-0 rounded-full px-3 py-2 text-[13px] font-semibold sm:px-4 sm:text-sm lg:px-3 xl:px-4 whitespace-nowrap text-muted-foreground transition-all hover:text-foreground"
           activeProps={{ className: "bg-white/10 text-foreground! shadow-sm" }}
         >
           {item.label}
