@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ContactBand } from "@/components/site-layout";
 import { Marquee, Reveal, SplitWords } from "@/components/motion";
-import { FoggedGlass } from "@/components/fogged-glass";
 import heroImage from "@/assets/regisclim-hero.jpg";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 
@@ -137,15 +136,14 @@ function Index() {
               className="aspect-[4/5] w-full object-cover sm:aspect-[5/5]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-            <FoggedGlass src={heroImage} />
           </div>
-          <div className="float-slower glass absolute z-10 bg-background/75! -bottom-6 -left-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-left-10">
+          <div className="float-slower glass absolute -bottom-6 -left-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-left-10">
             <span className="icon-badge size-10! rounded-xl!">
               <BadgeCheck className="size-5" />
             </span>
             RGE QualiPAC · Artisan CMA
           </div>
-          <div className="float-slow glass absolute z-10 bg-background/75! -top-5 -right-2 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-right-6">
+          <div className="float-slow glass absolute -top-5 -right-2 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-right-6">
             <span className="icon-badge icon-badge-warm size-10! rounded-xl!">
               <Clock3 className="size-5" />
             </span>
