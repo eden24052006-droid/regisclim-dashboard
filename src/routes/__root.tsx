@@ -13,6 +13,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader } from "@/components/site-layout";
 import { Aurora, PointerSpotlight } from "@/components/motion";
+import { Splash, SPLASH_SCRIPT } from "@/components/splash";
+import { Thermometer } from "@/components/thermometer";
 
 function NotFoundComponent() {
   return (
@@ -106,8 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: SPLASH_SCRIPT }} />
         <HeadContent />
       </head>
       <body>
@@ -126,6 +129,8 @@ function RootComponent() {
       <div className="relative min-h-screen">
         <Aurora />
         <PointerSpotlight />
+        <Splash />
+        <Thermometer />
         <SiteHeader />
         <main>
           <Outlet />
