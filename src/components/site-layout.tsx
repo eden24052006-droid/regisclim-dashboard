@@ -41,7 +41,10 @@ export function SiteHeader() {
   useEffect(() => {
     const bars = barsRef.current;
     if (!bars) return;
-    const observer = new ResizeObserver(() => setHeaderHeight(bars.offsetHeight));
+    const observer = new ResizeObserver(() => {
+      setHeaderHeight(bars.offsetHeight);
+      document.documentElement.style.setProperty("--header-h", `${bars.offsetHeight}px`);
+    });
     observer.observe(bars);
     return () => observer.disconnect();
   }, []);
