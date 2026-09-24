@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Clock3, Facebook, Flame, Menu, Phone, Snowflake, X } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -25,8 +25,22 @@ export function Brand() {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const barsRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(117);
+
+  useEffect(() => {
+    const bars = barsRef.current;
+    if (!bars) return;
+    const observer = new ResizeObserver(() => setHeaderHeight(bars.offsetHeight + 1));
+    observer.observe(bars);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur">
+    <>
+    <div aria-hidden style={{ height: headerHeight }} />
+    <header className="fixed inset-x-0 top-0 z-50 max-h-screen overflow-y-auto border-b border-border/80 bg-background/95 backdrop-blur">
+      <div ref={barsRef}>
       <div className="border-b border-border bg-secondary text-secondary-foreground">
         <div className="mx-auto flex min-h-9 max-w-7xl items-center justify-between gap-4 px-5 text-xs font-semibold sm:px-8">
           <span className="hidden items-center gap-2 sm:flex"><Clock3 className="size-3.5 text-accent" /> Lun–Ven · 8h–17h</span>
@@ -44,6 +58,7 @@ export function SiteHeader() {
         <Button asChild variant="warm" className="hidden md:inline-flex"><a href="tel:0767875716"><Phone /> Appeler Régis</a></Button>
         <Button size="icon" variant="ghost" className="lg:hidden" aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</Button>
       </div>
+      </div>
       {open && (
         <nav className="border-t border-border bg-background px-5 py-4 lg:hidden" aria-label="Navigation mobile">
           <div className="mx-auto grid max-w-7xl gap-1">
@@ -53,6 +68,7 @@ export function SiteHeader() {
         </nav>
       )}
     </header>
+    </>
   );
 }
 
