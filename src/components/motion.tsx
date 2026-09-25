@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Flame, Snowflake } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function useInView<T extends Element>(threshold = 0.15) {
@@ -89,12 +90,19 @@ export function SplitWords({
 export function Marquee({ items, className }: { items: string[]; className?: string }) {
   const row = (hidden: boolean) => (
     <ul className="flex shrink-0 items-center" aria-hidden={hidden || undefined}>
-      {items.map((item) => (
-        <li key={item} className="flex items-center gap-8 pr-8 whitespace-nowrap">
-          <span>{item}</span>
-          <span className="size-1.5 rotate-45 bg-accent" />
-        </li>
-      ))}
+      {items.map((item, i) => {
+        // Alternate cold and warm separators, like the logo's blue and orange arrows.
+        const Icon = i % 2 === 0 ? Snowflake : Flame;
+        return (
+          <li key={item} className="flex items-center gap-8 pr-8 whitespace-nowrap">
+            <span>{item}</span>
+            <Icon
+              aria-hidden
+              className={cn("size-5 shrink-0", i % 2 === 0 ? "text-primary" : "text-accent")}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
   return (
