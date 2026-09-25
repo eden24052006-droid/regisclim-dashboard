@@ -40,7 +40,14 @@ export function AvisClients() {
           </span>
         </div>
       </Reveal>
-      <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={cn(
+          "mt-12 grid gap-4",
+          avis.length === 1 && "max-w-xl",
+          avis.length >= 2 && "md:grid-cols-2",
+          avis.length >= 3 && "lg:grid-cols-3",
+        )}
+      >
         {avis.map((review, i) => (
           <Reveal key={`${review.name}-${i}`} delay={(i % 3) * 120}>
             <figure className="spotlight relative flex h-full flex-col rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-7">
