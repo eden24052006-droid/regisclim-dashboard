@@ -187,7 +187,7 @@ function InstallationPage() {
           <div className="glass flex flex-col items-start justify-between gap-6 rounded-full px-8 py-6 max-md:rounded-[2rem] md:flex-row md:items-center">
             <div>
               <h2 className="font-display text-2xl font-bold sm:text-3xl">
-                C’est un de vos futurs projets ?
+                C’est un de vos futurs projets&nbsp;?
               </h2>
               <p className="mt-2 text-muted-foreground">
                 Découvrez les aides disponibles pour concrétiser votre installation.

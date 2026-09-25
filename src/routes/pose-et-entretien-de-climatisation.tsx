@@ -163,7 +163,7 @@ function EntretienPage() {
       </section>
       <section className="mx-auto max-w-3xl px-5 pt-24 text-center sm:px-8">
         <Reveal>
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">Envie de nouveauté ?</h2>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">Envie de nouveauté&nbsp;?</h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Nous installons aussi des systèmes neufs adaptés à vos besoins de confort, de
             performance et d’économies d’énergie.

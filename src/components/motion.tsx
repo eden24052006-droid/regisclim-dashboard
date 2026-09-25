@@ -62,7 +62,13 @@ export function SplitWords({
   step?: number;
   className?: string;
 }) {
-  const words = text.split(" ");
+  // French typography: keep "?", "!", ":" and ";" glued to the previous word
+  // (non-breaking space) so they never wrap onto a line of their own.
+  const words = text.split(" ").reduce<string[]>((acc, word) => {
+    if (acc.length > 0 && /^[?!:;»]+$/.test(word)) acc[acc.length - 1] += `\u00a0${word}`;
+    else acc.push(word);
+    return acc;
+  }, []);
   return (
     <>
       {words.map((word, i) => (
