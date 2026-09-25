@@ -1,10 +1,12 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Clock3, Facebook, Flame, MapPin, Phone, Snowflake } from "lucide-react";
+import { Clock3, Facebook, MapPin, Phone } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Reveal, SplitWords } from "@/components/motion";
 import { AirConditioner } from "@/components/air-conditioner";
+import logoFull from "@/assets/logo-regisclim.png";
+import logoMark from "@/assets/logo-regisclim-mark.png";
 
 const navItems = [
   { to: "/" as const, label: "Accueil" },
@@ -14,26 +16,20 @@ const navItems = [
   { to: "/aides-et-subventions" as const, label: "Aides" },
 ];
 
-export function Brand({ tone = "dark" }: { tone?: "dark" | "light" }) {
+export function Brand({ variant = "mark" }: { variant?: "mark" | "full" }) {
+  const full = variant === "full";
   return (
-    <Link
-      to="/"
-      className="group flex shrink-0 items-center gap-2.5 sm:gap-3"
-      aria-label="RegisClim, accueil"
-    >
-      <span className="bg-gradient-cool relative grid size-9 place-items-center sm:size-10 rounded-xl text-primary-foreground shadow-md shadow-primary/30">
-        <Snowflake className="size-5 transition-transform duration-500 group-hover:rotate-90" />
-        <Flame className="bg-gradient-warm absolute -bottom-1.5 -right-1.5 size-5 rounded-full p-1 text-accent-foreground ring-2 ring-background" />
-      </span>
-      <span
+    <Link to="/" className="group flex shrink-0 items-center" aria-label="Régis Clim, accueil">
+      <img
+        src={full ? logoFull : logoMark}
+        alt="Régis Clim"
+        width={full ? 952 : 360}
+        height={full ? 300 : 160}
         className={cn(
-          "font-display text-lg font-bold tracking-tight sm:text-xl",
-          tone === "light" ? "text-secondary-foreground" : "text-foreground",
+          "w-auto transition-transform duration-500 group-hover:scale-[1.03]",
+          full ? "h-20 sm:h-24" : "h-12 sm:h-14",
         )}
-      >
-        Régis<span className="text-primary">.</span>
-        <span className="text-accent">CLIM</span>
-      </span>
+      />
     </Link>
   );
 }
@@ -160,7 +156,7 @@ export function SiteFooter() {
       <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-primary),var(--color-accent),transparent)]" />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <Brand tone="light" />
+          <Brand variant="full" />
           <p className="mt-6 max-w-sm text-sm leading-7 text-secondary-muted">
             Installation et entretien de climatisation, pompes à chaleur et chauffe-eau
             thermodynamiques à Nîmes.
