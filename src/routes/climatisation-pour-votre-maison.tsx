@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { BedDouble, BriefcaseBusiness, House, Store } from "lucide-react";
+import { BedDouble, BriefcaseBusiness, House } from "lucide-react";
 import { ContactBand, PageHero } from "@/components/site-layout";
 import { Reveal } from "@/components/motion";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/climatisation-pour-votre-maison")({
     pageHead({
       title: "Quelle climatisation choisir à Nîmes ? | Régis Clim",
       description:
-        "Monosplit, multisplit ou gainable : quelle climatisation pour une pièce, une maison, un bureau ou un magasin à Nîmes ? Les conseils d’un artisan climaticien.",
+        "Monosplit, multisplit ou gainable : quelle climatisation pour une pièce, une maison ou un bureau à Nîmes ? Les conseils d’un artisan climaticien.",
       path: "/climatisation-pour-votre-maison",
     }),
   component: UsagePage,
@@ -32,11 +32,6 @@ const uses = [
     icon: BriefcaseBusiness,
     title: "Bureaux",
     text: "Bureau, open space, salle de réunion, accueil ou local technique : chaque espace demande une installation performante et simple à utiliser.",
-  },
-  {
-    icon: Store,
-    title: "Magasins",
-    text: "Une température maîtrisée améliore le confort de vos clients et de vos salariés, quelle que soit la saison.",
   },
 ];
 const panelTones = [
