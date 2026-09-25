@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Clock3, Facebook, MapPin, Phone } from "lucide-react";
+import { Clock3, Facebook, Instagram, MapPin, Phone } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -195,6 +195,14 @@ export function SiteFooter() {
               className="flex items-center gap-2 transition-colors hover:text-secondary-foreground"
             >
               <Facebook className="size-4" /> Facebook
+            </a>
+            <a
+              href="https://www.instagram.com/regis_clim/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 transition-colors hover:text-secondary-foreground"
+            >
+              <Instagram className="size-4" /> Instagram
             </a>
             <span className="w-fit rounded-full border border-white/10 px-3 py-1 text-xs font-semibold text-secondary-foreground">
               RGE QualiPAC · Artisan CMA
