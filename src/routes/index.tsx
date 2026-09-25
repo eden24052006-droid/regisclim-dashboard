@@ -18,6 +18,8 @@ import { Marquee, Reveal, SplitWords } from "@/components/motion";
 import heroImage from "@/assets/regisclim-hero.jpg";
 import technicianImage from "@/assets/regisclim-technician.jpg";
 import { localBusinessJsonLd, pageHead } from "@/lib/seo";
+import { Realisations } from "@/components/realisations";
+import { AvisClients } from "@/components/avis";
 
 const commitments = [
   {
@@ -130,13 +132,13 @@ function Index() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
-          <div className="float-slower glass absolute -bottom-6 -left-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-left-10">
+          <div className="float-slower glass absolute z-10 bg-background/80! -bottom-6 -left-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-left-10">
             <span className="icon-badge size-10! rounded-xl!">
               <BadgeCheck className="size-5" />
             </span>
             RGE QualiPAC · Artisan CMA
           </div>
-          <div className="float-slow glass absolute -top-5 -right-2 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-right-6">
+          <div className="float-slow glass absolute z-10 bg-background/80! -top-5 -right-2 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold sm:-right-6">
             <span className="icon-badge icon-badge-warm size-10! rounded-xl!">
               <Clock3 className="size-5" />
             </span>
@@ -160,16 +162,18 @@ function Index() {
             {
               icon: Home,
               eyebrow: "Habitat",
+              title: "Climatisation pour particuliers",
               text: "Profitez de l’avis d’un professionnel pour une climatisation adaptée à votre espace de vie sur Nîmes et ses environs.",
               tone: "cool",
             },
             {
               icon: Building2,
               eyebrow: "Entreprise",
+              title: "Climatisation pour professionnels",
               text: "Des conditions de travail adaptées grâce à une solution d’air conditionné conçue pour vos locaux professionnels.",
               tone: "warm",
             },
-          ].map(({ icon: Icon, eyebrow, text, tone }, i) => (
+          ].map(({ icon: Icon, eyebrow, title, text, tone }, i) => (
             <Reveal
               key={eyebrow}
               delay={i * 150}
@@ -195,7 +199,7 @@ function Index() {
                   {eyebrow}
                 </p>
                 <h2 className="relative mt-2 font-display text-3xl font-bold sm:text-4xl">
-                  Climatisation
+                  {title}
                 </h2>
                 <p className="relative mt-4 max-w-md leading-7 text-muted-foreground">{text}</p>
               </article>
@@ -278,6 +282,8 @@ function Index() {
           </Reveal>
         </div>
       </section>
+      <Realisations />
+      <AvisClients />
       <ContactBand />
     </>
   );

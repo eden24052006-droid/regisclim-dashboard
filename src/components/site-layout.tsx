@@ -69,7 +69,8 @@ export function SiteHeader() {
               </span>
               <span className="flex items-center gap-2">
                 <MapPin className="hidden size-3.5 text-primary sm:block" />
-                Climaticien à Nîmes et ses environs
+                <span className="sm:hidden">Climaticien à Nîmes</span>
+                <span className="hidden sm:inline">Climaticien à Nîmes et ses environs</span>
               </span>
               <a
                 href="tel:0767875716"
