@@ -12,7 +12,7 @@ const navItems = [
   { to: "/" as const, label: "Accueil" },
   { to: "/installation-de-climatisation-a-nimes" as const, label: "Installation" },
   { to: "/pose-et-entretien-de-climatisation" as const, label: "Entretien" },
-  { to: "/climatisation-pour-votre-maison" as const, label: "Quel usage ?" },
+  { to: "/climatisation-pour-votre-maison" as const, label: "Quel usage\u00a0?" },
   { to: "/aides-et-subventions" as const, label: "Aides" },
 ];
 
