@@ -5,27 +5,16 @@ import { ContactBand, PageHero } from "@/components/site-layout";
 import { Reveal } from "@/components/motion";
 import { cn } from "@/lib/utils";
 import heroImage from "@/assets/regisclim-hero.jpg";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/climatisation-pour-votre-maison")({
-  head: () => ({
-    meta: [
-      { title: "Quelle climatisation choisir ? — RegisClim Nîmes" },
-      {
-        name: "description",
-        content:
-          "Climatisation monosplit, multisplit ou gainable pour maison, chambre, bureau et magasin à Nîmes.",
-      },
-      { property: "og:title", content: "Quelle climatisation choisir ? — RegisClim" },
-      {
-        property: "og:description",
-        content: "Une solution adaptée à chaque pièce et à chaque usage.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/climatisation-pour-votre-maison" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/climatisation-pour-votre-maison" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Quelle climatisation choisir à Nîmes ? | Régis Clim",
+      description:
+        "Monosplit, multisplit ou gainable : quelle climatisation pour une pièce, une maison, un bureau ou un magasin à Nîmes ? Les conseils d’un artisan climaticien.",
+      path: "/climatisation-pour-votre-maison",
+    }),
   component: UsagePage,
 });
 const uses = [

@@ -6,27 +6,16 @@ import { ContactBand, PageHero } from "@/components/site-layout";
 import { Reveal } from "@/components/motion";
 import { cn } from "@/lib/utils";
 import technicianImage from "@/assets/regisclim-technician.jpg";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/installation-de-climatisation-a-nimes")({
-  head: () => ({
-    meta: [
-      { title: "Installation de climatisation à Nîmes — RegisClim" },
-      {
-        name: "description",
-        content:
-          "Installation de climatisation, pompe à chaleur, gainable et chauffe-eau thermodynamique à Nîmes.",
-      },
-      { property: "og:title", content: "Installation de climatisation à Nîmes — RegisClim" },
-      {
-        property: "og:description",
-        content: "Une installation étudiée et réalisée par un professionnel qualifié.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/installation-de-climatisation-a-nimes" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/installation-de-climatisation-a-nimes" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Installation de climatisation à Nîmes | Régis Clim",
+      description:
+        "Pose de climatisation, pompe à chaleur réversible ou air-eau, gainable et chauffe-eau thermodynamique à Nîmes et environs, par un professionnel habilité.",
+      path: "/installation-de-climatisation-a-nimes",
+    }),
   component: InstallationPage,
 });
 

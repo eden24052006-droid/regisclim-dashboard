@@ -3,23 +3,16 @@ import { useEffect, useState } from "react";
 import { Scale } from "lucide-react";
 import { PageHero } from "@/components/site-layout";
 import { cn } from "@/lib/utils";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/mentions-legales")({
-  head: () => ({
-    meta: [
-      { title: "Mentions légales — RegisClim" },
-      {
-        name: "description",
-        content: "Informations légales et conditions d’utilisation du site RegisClim.",
-      },
-      { property: "og:title", content: "Mentions légales — RegisClim" },
-      { property: "og:description", content: "Informations légales de RegisClim à Nîmes." },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/mentions-legales" },
-      { name: "twitter:card", content: "summary" },
-    ],
-    links: [{ rel: "canonical", href: "/mentions-legales" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Mentions légales | Régis Clim",
+      description:
+        "Mentions légales du site Régis Clim, climaticien à Nîmes : identité, activités, assurance décennale et conditions d’utilisation.",
+      path: "/mentions-legales",
+    }),
   component: LegalPage,
 });
 const sections = [
