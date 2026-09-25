@@ -137,21 +137,21 @@ function EntretienPage() {
             Entretien selon votre équipement
           </h2>
         </Reveal>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {prices.map(([name, price], i) => {
             const amount = Number.parseInt(price, 10);
             return (
               <Reveal key={name} delay={i * 120}>
-                <article className="spotlight group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-7 transition-all duration-500 hover:-translate-y-2 hover:border-primary/40">
+                <article className="spotlight group relative h-full overflow-hidden rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4 transition-all sm:rounded-[1.75rem] sm:p-7 duration-500 hover:-translate-y-2 hover:border-primary/40">
                   <div className="glow-blob -right-10 -bottom-16 size-40 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/30" />
-                  <h3 className="relative font-display text-lg font-semibold text-muted-foreground">
+                  <h3 className="relative font-display text-sm font-semibold text-muted-foreground sm:text-lg">
                     {name}
                   </h3>
-                  <p className="relative mt-12 font-display font-bold">
-                    <span className="text-gradient-cool text-6xl">
+                  <p className="relative mt-6 font-display font-bold sm:mt-12">
+                    <span className="text-gradient-cool text-4xl sm:text-6xl">
                       <CountUp value={amount} />
                     </span>{" "}
-                    <span className="ml-1 text-xl text-foreground/80">
+                    <span className="ml-1 text-sm whitespace-nowrap text-foreground/80 sm:text-xl">
                       {price.replace(String(amount), "").trim()}
                     </span>
                   </p>

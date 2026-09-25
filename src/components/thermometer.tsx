@@ -10,7 +10,9 @@ const COLD = 19;
  */
 export function Thermometer() {
   const [progress, setProgress] = useState(0);
+  const [scrolling, setScrolling] = useState(false);
   const ticking = useRef(false);
+  const hideTimer = useRef(0);
 
   useEffect(() => {
     const update = () => {
@@ -19,6 +21,11 @@ export function Thermometer() {
       setProgress(max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0);
     };
     const onScroll = () => {
+      // On small screens the reading only shows while scrolling, so it never
+      // sits on top of the content.
+      setScrolling(true);
+      window.clearTimeout(hideTimer.current);
+      hideTimer.current = window.setTimeout(() => setScrolling(false), 1200);
       if (ticking.current) return;
       ticking.current = true;
       requestAnimationFrame(update);
@@ -29,6 +36,7 @@ export function Thermometer() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.clearTimeout(hideTimer.current);
     };
   }, []);
 
@@ -71,8 +79,13 @@ export function Thermometer() {
         </span>
       </div>
 
-      {/* Smaller screens: compact reading in the bottom-left corner. */}
-      <div className="glass fixed right-3 bottom-3 flex items-center gap-2 rounded-full bg-background/70! py-1.5 pr-3 pl-1.5 xl:hidden">
+      {/* Smaller screens: compact reading in the bottom-right corner, shown while scrolling. */}
+      <div
+        className={cn(
+          "glass fixed right-3 bottom-3 flex items-center gap-2 rounded-full bg-background/80! py-1.5 pr-3 pl-1.5 transition-all duration-500 xl:hidden",
+          scrolling ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+        )}
+      >
         <span className="relative h-7 w-2 overflow-hidden rounded-full bg-white/10">
           <span
             className="absolute inset-x-0 bottom-0 rounded-full bg-[linear-gradient(to_top,var(--color-primary),var(--color-accent))] transition-[height] duration-300"
