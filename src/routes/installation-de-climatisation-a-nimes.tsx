@@ -156,9 +156,9 @@ function InstallationPage() {
             <p className="eyebrow text-primary">Réglementation</p>
             <h2 className="mt-3! text-4xl! sm:text-5xl!">Une solution adaptée à chaque lieu</h2>
             <p className="mt-6! text-lg">
-              L’installation d’une climatisation exige un spécialiste qualifié. À la maison, au
-              bureau ou dans un magasin, l’objectif est d’apporter confort et bien-être en
-              respectant les contraintes techniques, l’esthétique et le bon dimensionnement.
+              L’installation d’une climatisation exige un spécialiste qualifié. À la maison ou au
+              bureau, l’objectif est d’apporter confort et bien-être en respectant les contraintes
+              techniques, l’esthétique et le bon dimensionnement.
             </p>
             <p className="text-lg">
               Après une expertise technique de votre logement ou local, Régis Garnier vous propose
