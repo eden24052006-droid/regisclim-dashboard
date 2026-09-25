@@ -3,27 +3,16 @@ import { BadgeEuro, ExternalLink, Info, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactBand, PageHero } from "@/components/site-layout";
 import { Reveal } from "@/components/motion";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/aides-et-subventions")({
-  head: () => ({
-    meta: [
-      { title: "Aides pour pompe à chaleur — RegisClim Nîmes" },
-      {
-        name: "description",
-        content:
-          "Informations sur les aides et subventions pour la pose d’une pompe à chaleur et la rénovation énergétique.",
-      },
-      { property: "og:title", content: "Aides et subventions — RegisClim" },
-      {
-        property: "og:description",
-        content: "Les dispositifs d’aide pour votre projet de rénovation énergétique.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/aides-et-subventions" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/aides-et-subventions" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Aides pompe à chaleur : MaPrimeRénov’, CEE | Régis Clim",
+      description:
+        "Prime Énergie (CEE) et MaPrimeRénov’ : les aides pour financer votre pompe à chaleur et vos travaux de rénovation énergétique à Nîmes. Simulez vos aides.",
+      path: "/aides-et-subventions",
+    }),
   component: AidesPage,
 });
 function AidesPage() {

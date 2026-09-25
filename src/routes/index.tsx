@@ -17,6 +17,7 @@ import { ContactBand } from "@/components/site-layout";
 import { Marquee, Reveal, SplitWords } from "@/components/motion";
 import heroImage from "@/assets/regisclim-hero.jpg";
 import technicianImage from "@/assets/regisclim-technician.jpg";
+import { localBusinessJsonLd, pageHead } from "@/lib/seo";
 
 const commitments = [
   {
@@ -60,25 +61,14 @@ const expertise = [
 ];
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Climatisation à Nîmes — RegisClim" },
-      {
-        name: "description",
-        content:
-          "Installation et entretien de climatisation, pompes à chaleur et chauffe-eau thermodynamiques à Nîmes.",
-      },
-      { property: "og:title", content: "Climatisation à Nîmes — RegisClim" },
-      {
-        property: "og:description",
-        content: "Votre spécialiste climatisation pour particuliers et professionnels à Nîmes.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Climaticien à Nîmes : installation et entretien | Régis Clim",
+      description:
+        "Régis Clim, artisan climaticien à Nîmes : installation et entretien de climatisation, pompes à chaleur et chauffe-eau thermodynamiques. Tél. 07 67 87 57 16.",
+      path: "/",
+      extra: [{ "script:ld+json": localBusinessJsonLd }],
+    }),
   component: Index,
 });
 
@@ -96,17 +86,19 @@ function Index() {
     <>
       <section className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pt-12 pb-16 sm:px-8 sm:pt-16 lg:min-h-[calc(100vh-7rem)] lg:grid-cols-[1.1fr_1fr]">
         <div>
-          <p className="eyebrow-pill animate-rise text-foreground/90">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex size-2 rounded-full bg-accent" />
+          <h1>
+            <span className="eyebrow-pill animate-rise text-foreground/90">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
+                <span className="relative inline-flex size-2 rounded-full bg-accent" />
+              </span>
+              Artisan climaticien à Nîmes
             </span>
-            Artisan climaticien à Nîmes
-          </p>
-          <h1 className="mt-7 font-display text-5xl leading-[1.02] font-bold sm:text-7xl xl:text-8xl">
-            <SplitWords text="Votre confort," delay={100} />
-            <br />
-            <SplitWords text="été comme hiver." delay={300} className="text-shimmer pb-2" />
+            <span className="mt-7 block font-display text-5xl leading-[1.02] font-bold sm:text-7xl xl:text-8xl">
+              <SplitWords text="Votre confort," delay={100} />
+              <br />
+              <SplitWords text="été comme hiver." delay={300} className="text-shimmer pb-2" />
+            </span>
           </h1>
           <p className="animate-rise mt-7 max-w-xl text-lg leading-8 text-muted-foreground [animation-delay:600ms]">
             Installation et entretien de climatisation pour particuliers et professionnels à Nîmes
@@ -133,6 +125,7 @@ function Index() {
               width={1600}
               height={1000}
               alt="Salon lumineux équipé d’une climatisation à Nîmes"
+              fetchPriority="high"
               className="aspect-[4/5] w-full object-cover sm:aspect-[5/5]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />

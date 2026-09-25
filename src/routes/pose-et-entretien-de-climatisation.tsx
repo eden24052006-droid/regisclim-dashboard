@@ -6,27 +6,16 @@ import { CountUp, Reveal } from "@/components/motion";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { cn } from "@/lib/utils";
 import technicianImage from "@/assets/regisclim-technician.jpg";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/pose-et-entretien-de-climatisation")({
-  head: () => ({
-    meta: [
-      { title: "Entretien de climatisation à Nîmes — RegisClim" },
-      {
-        name: "description",
-        content:
-          "Entretien professionnel de climatisation, gainable, pompe à chaleur et ballon thermodynamique à Nîmes.",
-      },
-      { property: "og:title", content: "Entretien de climatisation à Nîmes — RegisClim" },
-      {
-        property: "og:description",
-        content: "Tarifs d’entretien transparents pour un équipement fiable et durable.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/pose-et-entretien-de-climatisation" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: "/pose-et-entretien-de-climatisation" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Entretien de climatisation à Nîmes dès 105 € | Régis Clim",
+      description:
+        "Entretien de climatisation à Nîmes : mono split 105 €, gainable 130 €, pompe à chaleur 180 €, ballon thermodynamique 130 € TTC. RDV au 07 67 87 57 16.",
+      path: "/pose-et-entretien-de-climatisation",
+    }),
   component: EntretienPage,
 });
 
