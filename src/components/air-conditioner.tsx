@@ -41,30 +41,20 @@ function resetBlock({ el }: Block) {
   el.style.willChange = "";
 }
 
-const WIND_PATHS = [
-  { d: "M104 0 C 98 60, 72 110, 62 180 S 42 262, 30 300", w: 5.7, delay: "0s" },
-  { d: "M116 0 C 112 80, 96 150, 100 230", w: 3.6, delay: "-1.1s" },
-  { d: "M122 0 C 124 70, 112 140, 120 210 S 126 272, 120 300", w: 6.8, delay: "-0.5s" },
-  { d: "M130 0 C 138 80, 150 150, 148 230", w: 3.6, delay: "-1.7s" },
-  { d: "M140 0 C 150 60, 176 110, 186 180 S 204 250, 214 300", w: 5.7, delay: "-0.8s" },
-];
-
 /**
- * Small AC unit shown in the header. Scrolling down opens its flap, lets a
- * light breeze out and lifts/ripples the page blocks along a slow wave, as
- * if the airflow were pushing the site down.
+ * Small AC unit shown in the header. Scrolling down opens its flap and
+ * lifts/ripples the page blocks along a slow wave, as if the airflow were
+ * pushing the site down.
  */
 export function AirConditioner({ className }: { className?: string }) {
   const flapRef = useRef<SVGGElement>(null);
   const ledRef = useRef<SVGCircleElement>(null);
   const unitRef = useRef<HTMLDivElement>(null);
-  const windRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const unit = unitRef.current;
-    const wind = windRef.current;
-    if (!unit || !wind) return;
+    if (!unit) return;
 
     let blocks: Block[] = [];
     let target = 0;
@@ -116,7 +106,6 @@ export function AirConditioner({ className }: { className?: string }) {
           `skewX(${(strength * wave * 2).toFixed(2)}deg)`;
       }
 
-      wind.style.opacity = String(Math.min(0.75, intensity * 1.1));
       if (flapRef.current) {
         flapRef.current.style.transform = `translateY(${intensity * 15}px) scaleY(${1 - intensity * 0.3})`;
       }
@@ -132,8 +121,6 @@ export function AirConditioner({ className }: { className?: string }) {
         intensity = 0;
         blocks.forEach(resetBlock);
         blocks = [];
-        wind.style.opacity = "0";
-        wind.classList.add("wind-paused");
         unit.style.transform = "";
         if (flapRef.current) flapRef.current.style.transform = "";
         if (ledRef.current) ledRef.current.style.opacity = "0.25";
@@ -145,7 +132,6 @@ export function AirConditioner({ className }: { className?: string }) {
       if (running) return;
       running = true;
       prepare();
-      wind.classList.remove("wind-paused");
       frame = requestAnimationFrame(render);
     };
 
@@ -213,40 +199,6 @@ export function AirConditioner({ className }: { className?: string }) {
           </g>
         </svg>
       </div>
-      <svg
-        ref={windRef}
-        viewBox="0 0 240 300"
-        className="wind-paused absolute top-[calc(100%-2px)] left-1/2 h-72 w-60 -translate-x-1/2 xl:h-80 xl:w-72 overflow-visible opacity-0"
-      >
-        <defs>
-          <linearGradient
-            id="wind-fade"
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="300"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0" stopColor="rgb(205, 238, 255)" stopOpacity="0.95" />
-            <stop offset="0.6" stopColor="rgb(160, 215, 255)" stopOpacity="0.35" />
-            <stop offset="1" stopColor="rgb(160, 215, 255)" stopOpacity="0" />
-          </linearGradient>
-          <filter id="wind-blur" x="-40%" y="-20%" width="180%" height="140%">
-            <feGaussianBlur stdDeviation="3.2" />
-          </filter>
-        </defs>
-        <g fill="none" stroke="url(#wind-fade)" strokeLinecap="round" filter="url(#wind-blur)">
-          {WIND_PATHS.map(({ d, w, delay }) => (
-            <path
-              key={d}
-              d={d}
-              strokeWidth={w}
-              className="wind-line"
-              style={{ animationDelay: delay }}
-            />
-          ))}
-        </g>
-      </svg>
     </div>
   );
 }
